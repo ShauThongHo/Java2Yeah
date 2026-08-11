@@ -33,7 +33,7 @@ public class project extends Application {
         Rectangle rectanglebgd = new Rectangle(1000, 700);
         rectanglebgd.widthProperty().bind(rootLayout.widthProperty());
         rectanglebgd.heightProperty().bind(rootLayout.heightProperty());
-        rectanglebgd.setFill(Color.rgb(0, 0, 0, 0.3));
+        rectanglebgd.setFill(Color.rgb(0, 0, 0, 0.5));
         
         rootLayout.getChildren().addAll(imageView, rectanglebgd);
 
@@ -42,8 +42,7 @@ public class project extends Application {
         topBar.setAlignment(Pos.CENTER_LEFT);
         topBar.setPadding(new Insets(15, 25, 15, 25)); 
         topBar.setPrefHeight(90);
-        topBar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85);");
-        topBar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85);");
+        topBar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
         //book icon
         Image bookIcon = new Image("book.png");
