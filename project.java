@@ -78,45 +78,50 @@ public class project extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //main menu
-        //background
+        //background part
+        //background image
         Image imagebgd = new Image("background.jpg");
         ImageView imageView = new ImageView(imagebgd);
         imageView.setPreserveRatio(false);
 
+        //background layout shape
+        Rectangle rectanglebgd = new Rectangle(1000, 700);
+        rectanglebgd.setFill(Color.rgb(0, 0, 0, 0.5));
+
         StackPane rootLayout = new StackPane();
+        rootLayout.getChildren().addAll(imageView, rectanglebgd);
+
+        //background scale window size
         imageView.fitWidthProperty().bind(rootLayout.widthProperty());
         imageView.fitHeightProperty().bind(rootLayout.heightProperty());
 
-        //background shape
-        Rectangle rectanglebgd = new Rectangle(1000, 700);
         rectanglebgd.widthProperty().bind(rootLayout.widthProperty());
         rectanglebgd.heightProperty().bind(rootLayout.heightProperty());
-        rectanglebgd.setFill(Color.rgb(0, 0, 0, 0.5));
-        
-        rootLayout.getChildren().addAll(imageView, rectanglebgd);
 
-        //front shape
+        //topbar part
+        //topbar layout
         HBox topBar = new HBox(15); 
         topBar.setAlignment(Pos.CENTER_LEFT);
         topBar.setPadding(new Insets(15, 25, 15, 25)); 
         topBar.setPrefHeight(90);
         topBar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
-        //book icon
+        //book icon image
         Image bookIcon = new Image("book.png");
         ImageView bookIconView = new ImageView(bookIcon);
         bookIconView.setFitWidth(45);
         bookIconView.setFitHeight(45);
         bookIconView.setPreserveRatio(true);
 
-        //text1: Donation System
-        Text text1 = new Text("System Menu --");
-        text1.setFill(Color.BLACK);
-        text1.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
-        text1.setStyle("-fx-cursor: hand;");
-        text1.setOnMouseEntered(e -> text1.setFill(Color.valueOf("#4d6177")));
-        text1.setOnMouseExited(e -> text1.setFill(Color.BLACK));
+        //textSystemMenu
+        Text textSystemMenu = new Text("System Menu --");
+        textSystemMenu.setFill(Color.BLACK);
+        textSystemMenu.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+        textSystemMenu.setStyle("-fx-cursor: hand;");
+        textSystemMenu.setOnMouseEntered(e -> textSystemMenu.setFill(Color.valueOf("#4d6177")));
+        textSystemMenu.setOnMouseExited(e -> textSystemMenu.setFill(Color.BLACK));
 
+        //make the text and image move to left and right
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -163,7 +168,7 @@ public class project extends Application {
             btn.setOnMouseExited(e -> btn.setStyle(btnstyle));
         }
 
-        //logic change different interface
+        //menu content
         StackPane centerContentArea = new StackPane();
         centerContentArea.setPadding(new Insets(20));
 
@@ -171,10 +176,10 @@ public class project extends Application {
         Text welcomeText = new Text("Welcome to Book Donation & Management System \nPlease select a menu above.");
         welcomeText.setFill(Color.WHITE);
         welcomeText.setFont(Font.font("Courier New", FontWeight.BOLD, 30));
-        centerContentArea.getChildren().add(welcomeText);
+        centerContentArea.getChildren().addAll(welcomeText);
 
         //menu text click events
-        text1.setOnMouseClicked(e -> {
+        textSystemMenu.setOnMouseClicked(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().add(welcomeText);
         });
@@ -325,7 +330,7 @@ public class project extends Application {
             centerContentArea.getChildren().add(formContainer);
         });
 
-        topBar.getChildren().addAll(bookIconView, text1, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard);
+        topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard);
 
         BorderPane mainLayout = new BorderPane();
         mainLayout.setTop(topBar);
