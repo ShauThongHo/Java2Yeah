@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import java.util.ArrayList;
+import javafx.scene.control.ScrollPane;
 
 class Book {
     private String title;
@@ -37,6 +38,18 @@ class Book {
         this.isbn = isbn;
         this.category = category;
         this.quantity = quantity;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getIsbn() {
@@ -89,7 +102,6 @@ public class project extends Application {
         rectanglebgd.setFill(Color.rgb(0, 0, 0, 0.5));
 
         StackPane rootLayout = new StackPane();
-        rootLayout.getChildren().addAll(imageView, rectanglebgd);
 
         //background scale window size
         imageView.fitWidthProperty().bind(rootLayout.widthProperty());
@@ -184,37 +196,105 @@ public class project extends Application {
             centerContentArea.getChildren().add(welcomeText);
         });
 
+        //main menu pane
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setTop(topBar);
+        mainLayout.setCenter(centerContentArea);
+        rootLayout.getChildren().addAll(imageView, rectanglebgd, mainLayout);
+
         //catalog part
         //click catalog status
         buttonCatalog.setOnAction(e -> {
             centerContentArea.getChildren().clear();
-            VBox catalogBox = new VBox(15);
-            catalogBox.setAlignment(Pos.CENTER);
 
+            //scroll pane
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+            //title text
             Text title = new Text("Book Catelog & Inventory");
             title.setFill(Color.WHITE);
-            title.setFont(Font.font("Courier New", FontWeight.BOLD, 22));
+            title.setFont(Font.font("Courier New", FontWeight.BOLD, 25));
 
-            TextArea txtAreaCatalog = new TextArea();
-            txtAreaCatalog.setMaxWidth(600);
-            txtAreaCatalog.setMaxHeight(350);
-            txtAreaCatalog.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px;");
-            txtAreaCatalog.setEditable(false);
+            //show each book card
+            VBox catalogBox = new VBox(20);
+            catalogBox.setAlignment(Pos.TOP_CENTER);
+            catalogBox.setPadding(new Insets(20));
+            catalogBox.getChildren().addAll(title);
 
-            if (bookManager.bookList.isEmpty()) {
-                txtAreaCatalog.setText("No books registered in the system yet.");
+            //display catalog content
+            if(bookManager.bookList.isEmpty()) {
+                Text emptyText = new Text("No books available in the catalog.");
+                emptyText.setFill(Color.LIGHTGRAY);
+                emptyText.setFont(Font.font("Courier New", FontWeight.BOLD, 20));
+                catalogBox.getChildren().addAll(emptyText);
             } else {
-                StringBuilder sb = new StringBuilder();
-                for (Book b : bookManager.bookList) {
-                    sb.append(b.displayInfo());
+                for(Book b : bookManager.bookList) {
+                    //create bookcard
+                    HBox bookCard = new HBox(20);
+                    bookCard.setAlignment(Pos.CENTER_LEFT);
+                    bookCard.setPadding(new Insets(15));
+                    bookCard.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 10px;");
+                    bookCard.setMaxWidth(850);
+
+                    //book image placeholder
+                    ImageView bookImageView = new ImageView(new Image("book.png"));
+                    bookImageView.setFitWidth(60);
+                    bookImageView.setFitHeight(80);
+                    bookImageView.setPreserveRatio(true);
+
+                    //center content part
+                    VBox infoBox = new VBox(5);
+
+                    //book title text
+                    Text bookTitle = new Text(b.getTitle());
+                    bookTitle.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
+                    bookTitle.setFill(Color.valueOf("#506377"));
+
+                    //author text
+                    Text bookAuthor = new Text("Author: " + b.getAuthor());
+                    bookAuthor.setFont(Font.font("Courier New", 14));
+                    bookAuthor.setFill(Color.valueOf("#506377"));
+
+                    //category text
+                    Text bookCategory = new Text("Category: " + b.getCategory());
+                    bookCategory.setFont(Font.font("Courier New", 14));
+                    bookCategory.setFill(Color.valueOf("#506377"));
+
+                    infoBox.getChildren().addAll(bookTitle, bookAuthor, bookCategory);
+
+                    //separate spacer
+                    Region cardSpacer = new Region();
+                    HBox.setHgrow(cardSpacer, Priority.ALWAYS);
+
+                    //right content part
+                    VBox rightBox = new VBox(5);
+                    rightBox.setAlignment(Pos.CENTER_RIGHT);
+
+                    //quantity text
+                    Text bookQty = new Text("Stock Qty: " + b.getQuantity());
+                    bookQty.setFont(Font.font("Courier New", FontWeight.BOLD, 14));
+                    bookQty.setFill(Color.valueOf("#506377"));
+
+                    //isbn text
+                    Text bookIsbn = new Text("ISBN: " + b.getIsbn());
+                    bookIsbn.setFont(Font.font("Courier New", 14));
+                    bookIsbn.setFill(Color.valueOf("#506377"));
+
+                    rightBox.getChildren().addAll(bookQty, bookIsbn);
+
+                    //combine card content
+                    bookCard.getChildren().addAll(bookImageView, infoBox, cardSpacer, rightBox);
+                    catalogBox.getChildren().addAll(bookCard);
                 }
-                txtAreaCatalog.setText(sb.toString());
             }
 
-            catalogBox.getChildren().addAll(title, txtAreaCatalog);
-            centerContentArea.getChildren().add(catalogBox);
+            scrollPane.setContent(catalogBox);
+            centerContentArea.getChildren().add(scrollPane);
         });
 
+        //donation part
         //donate status
         buttonDonate.setOnAction(e -> {
             centerContentArea.getChildren().clear();
@@ -222,63 +302,86 @@ public class project extends Application {
             formContainer.setAlignment(Pos.CENTER);
             formContainer.setMaxWidth(550);
             formContainer.setMaxHeight(500);
-            formContainer.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15px; -fx-padding: 30px;");
+            formContainer.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15px; -fx-padding: 20px;");
 
+            //donate title text
             Text donateTitle = new Text("Donate New Book Form");
             donateTitle.setFill(Color.valueOf("#2d3748"));
-            donateTitle.setFont(Font.font("Courier New", FontWeight.BOLD, 22));
+            donateTitle.setFont(Font.font("Courier New", FontWeight.BOLD, 25));
 
+            //form grid layout
             GridPane grid = new GridPane();
             grid.setHgap(15);
             grid.setVgap(15);
             grid.setAlignment(Pos.CENTER);
 
-            String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-font-weight: bold;";
-            String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
+            //label style
+            String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-font-weight: bold;";
+            
+            //field style
+            String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 16px;";
 
+            //title part
             Label lblTitle = new Label("Book Title:");
             lblTitle.setStyle(labelStyle);
             TextField txtTitle = new TextField();
             txtTitle.setStyle(fldStyle);
 
+            //author part
             Label lblAuthor = new Label("Author:");
             lblAuthor.setStyle(labelStyle);
             TextField txtAuthor = new TextField();
             txtAuthor.setStyle(fldStyle);
 
+            //ISBN part
             Label lblISBN = new Label("ISBN:");
             lblISBN.setStyle(labelStyle);
             TextField txtISBN = new TextField();
-            txtISBN.setPromptText("Numbers only (e.g. 10 or 13 digits)");
+            txtISBN.setPromptText("Numbers only...");
             txtISBN.setStyle(fldStyle);
 
+            //category part
             Label lblCategory = new Label("Category:");
             lblCategory.setStyle(labelStyle);
             ComboBox<String> cmbCategory = new ComboBox<>();
-            cmbCategory.getItems().addAll("计算机科学", "文学小说", "自然科学", "历史哲学", "少儿读物");
+            cmbCategory.getItems().addAll("Fantasy", "Science Fiction", "Mystery", "Horror", "History", "Story", "Literature");
             cmbCategory.setPromptText("SELECT CATEGORY");
             cmbCategory.setStyle(fldStyle);
 
+            //combine form content
             grid.add(lblTitle, 0, 0); grid.add(txtTitle, 1, 0);
             grid.add(lblAuthor, 0, 1); grid.add(txtAuthor, 1, 1);
             grid.add(lblISBN, 0, 2); grid.add(txtISBN, 1, 2);
             grid.add(lblCategory, 0, 3); grid.add(cmbCategory, 1, 3);
 
+            //feedback text area
             TextArea txtFeedback = new TextArea();
             txtFeedback.setMaxWidth(450);
             txtFeedback.setMaxHeight(70);
             txtFeedback.setEditable(false);
-            txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
+            txtFeedback.setWrapText(true);
+            txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px;");
             txtFeedback.setPromptText("System feedback will appear here...");
 
+            //button box part
             HBox btnBox = new HBox(20);
             btnBox.setAlignment(Pos.CENTER);
+
+            //button add
             Button btnAdd = new Button("Confirm Add");
+
+            //button clear
             Button btnClear = new Button("Clear Form");
 
-            btnAdd.setStyle("-fx-background-color: #2b6cb0; -fx-text-fill: white; -fx-font-family: 'Courier New'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 6px; -fx-cursor: hand; -fx-padding: 6 15;");
-            btnClear.setStyle("-fx-background-color: #a0aec0; -fx-text-fill: white; -fx-font-family: 'Courier New'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 6px; -fx-cursor: hand; -fx-padding: 6 15;");
+            //donation button part style
+            Button [] DonationButtons = {btnAdd, btnClear};
+            for (Button btn : DonationButtons) {
+                btn.setStyle(btnstyle);
+                btn.setOnMouseEntered(event -> btn.setStyle(btnHoverStyle));
+                btn.setOnMouseExited(event -> btn.setStyle(btnstyle));
+            }
 
+            //button clear status
             btnClear.setOnAction(event -> {
                 txtTitle.clear();
                 txtAuthor.clear();
@@ -287,56 +390,61 @@ public class project extends Application {
                 txtFeedback.clear();
             });
 
+            //button add status
             btnAdd.setOnAction(event -> {
                 if (txtTitle.getText().isBlank() || txtAuthor.getText().isBlank() || 
                     txtISBN.getText().isBlank() || cmbCategory.getValue() == null) {
-                    txtFeedback.setStyle("-fx-text-fill: red;");
+                    txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: red;");
                     txtFeedback.setText("Error: Please fill in all text fields and select a category!");
                     return;
                 }
 
+                //clear isbn front and back spaces
                 String isbnText = txtISBN.getText().trim();
 
+                //check isbn numeric
                 try {
                     Long.parseLong(isbnText);
                 } catch (NumberFormatException ex) {
-                    txtFeedback.setStyle("-fx-text-fill: red;");
+                    txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: red;");
                     txtFeedback.setText("Error: ISBN must contain numbers only (no letters/symbols)!");
                     return;
                 }
 
+                //check the isbn standard
                 if (isbnText.length() != 10 && isbnText.length() != 13) {
-                    txtFeedback.setStyle("-fx-text-fill: red;");
+                    txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: red;");
                     txtFeedback.setText("Warning: Standard ISBN should be 10 or 13 digits long.");
+                    return;
                 }
 
+                //catch the content
                 String titleStr = txtTitle.getText().trim();
                 String authorStr = txtAuthor.getText().trim();
                 String categoryStr = cmbCategory.getValue();
 
+                //send the content
                 String resultMsg = bookManager.addOrUpdateBook(titleStr, authorStr, isbnText, categoryStr);
                 
-                txtFeedback.setStyle("-fx-text-fill: green;");
+                //feedback part
+                txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: green;");
                 txtFeedback.setText(resultMsg);
 
+                //clear after success
                 txtTitle.clear();
                 txtAuthor.clear();
                 txtISBN.clear();
                 cmbCategory.setValue(null);
             });
 
+            //combine all donation part
             btnBox.getChildren().addAll(btnAdd, btnClear);
             formContainer.getChildren().addAll(donateTitle, grid, btnBox, txtFeedback);
             centerContentArea.getChildren().add(formContainer);
         });
 
+        //combine topbar button
         topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard);
-
-        BorderPane mainLayout = new BorderPane();
-        mainLayout.setTop(topBar);
-        mainLayout.setCenter(centerContentArea);
-
-        rootLayout.getChildren().add(mainLayout);
 
         Scene scene = new Scene(rootLayout, 1200, 700);
 
