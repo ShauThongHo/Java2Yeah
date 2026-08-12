@@ -86,7 +86,12 @@ class BookManager {
 }
 
 public class project extends Application {  
-    private BookManager bookManager = new BookManager();
+    private BookManager bookManager = new BookManager() {
+        //instance initializer
+        {
+            bookList = bookDataFile.loadBooks();
+        }
+    };
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -235,13 +240,13 @@ public class project extends Application {
                     HBox bookCard = new HBox(20);
                     bookCard.setAlignment(Pos.CENTER_LEFT);
                     bookCard.setPadding(new Insets(15));
-                    bookCard.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 10px;");
+                    bookCard.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 10px;");
                     bookCard.setMaxWidth(850);
 
                     //book image placeholder
-                    ImageView bookImageView = new ImageView(new Image("book.png"));
-                    bookImageView.setFitWidth(60);
-                    bookImageView.setFitHeight(80);
+                    ImageView bookImageView = new ImageView(new Image("bookCover.png"));
+                    bookImageView.setFitWidth(50);
+                    bookImageView.setFitHeight(60);
                     bookImageView.setPreserveRatio(true);
 
                     //center content part
@@ -425,6 +430,9 @@ public class project extends Application {
 
                 //send the content
                 String resultMsg = bookManager.addOrUpdateBook(titleStr, authorStr, isbnText, categoryStr);
+
+                //save updated list to local file
+                bookDataFile.saveBooks(bookManager.bookList);
                 
                 //feedback part
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: green;");
