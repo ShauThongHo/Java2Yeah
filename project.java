@@ -156,10 +156,13 @@ public class project extends Application {
         topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard);
 
         Scene scene = new Scene(rootLayout, 1200, 700);
+        
+        primaryStage.setFullScreen(true);
 
         primaryStage.setTitle("Book Donation & Management system");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
 
     public static void main(String[] args) {
