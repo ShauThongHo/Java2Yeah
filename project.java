@@ -108,8 +108,11 @@ public class project extends Application {
         //button dashboard
         Button buttonDashboard = new Button("Dashboard");
 
+        //button quit
+        Button buttonQuit = new Button("Quit");
+
         //both button style
-        Button [] menuButtons = {buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard};
+        Button [] menuButtons = {buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonQuit};
         for (Button btn : menuButtons) {
             btn.setStyle(btnstyle);
             btn.setOnMouseEntered(e -> btn.setStyle(btnHoverStyle));
@@ -152,8 +155,12 @@ public class project extends Application {
             centerContentArea.getChildren().addAll(donateView.craeteView(bookManager, btnstyle, btnHoverStyle));
         });
 
+        buttonQuit.setOnAction(e -> {
+            quitAction.handleQuit();
+        });
+
         //combine topbar button
-        topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard);
+        topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonQuit);
 
         Scene scene = new Scene(rootLayout, 1200, 700);
         
