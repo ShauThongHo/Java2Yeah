@@ -18,11 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 
 public class project extends Application {  
-    private BookManager bookManager = new BookManager() {
-        {
-            bookList = bookDataFile.loadBooks();
-        }
-    };
+    private BookManager bookManager = new BookManager();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -153,6 +149,13 @@ public class project extends Application {
         buttonDonate.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().addAll(donateView.craeteView(bookManager, btnstyle, btnHoverStyle));
+        });
+
+        //borrow part
+        //click borrow status
+        buttonBorrow.setOnAction(e -> {
+            centerContentArea.getChildren().clear();
+            centerContentArea.getChildren().addAll(borrowView.createView(bookManager, btnstyle, btnHoverStyle));
         });
 
         buttonQuit.setOnAction(e -> {
