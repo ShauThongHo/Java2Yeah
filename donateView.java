@@ -111,22 +111,19 @@ public class donateView {
                 return;
             }
 
-            //clear isbn front and back spaces
-            String isbnText = txtISBN.getText().trim();
-
-            //check isbn numeric
-            try {
-                Long.parseLong(isbnText);
-            } catch (NumberFormatException ex) {
+            //clear isbn front and back spaces and normalize hyphens/spaces
+            String rawIsbn = txtISBN.getText().trim();
+            if (rawIsbn.isEmpty()) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: red;");
-                txtFeedback.setText("Error: ISBN must contain numbers only (no letters/symbols)!");
+                txtFeedback.setText("Error: ISBN cannot be empty!");
                 return;
             }
+            String isbnText = BookManager.sanitizeIsbn(rawIsbn);
 
-            //check the isbn standard
-            if (isbnText.length() != 10 && isbnText.length() != 13) {
+            //check the isbn is a standard 10 or 13 digit number
+            if (!BookManager.isValidIsbn(isbnText)) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: red;");
-                txtFeedback.setText("Warning: Standard ISBN should be 10 or 13 digits long.");
+                txtFeedback.setText("Error: ISBN must be a standard 10 or 13 digit number (hyphens and spaces are allowed).");
                 return;
             }
 
@@ -135,12 +132,9 @@ public class donateView {
             String authorStr = txtAuthor.getText().trim();
             String categoryStr = cmbCategory.getValue();
 
-            //send the content
+            //send the content (addOrUpdateBook persists the updated list)
             String resultMsg = bookManager.addOrUpdateBook(titleStr, authorStr, isbnText, categoryStr);
 
-            //save updated list to local file
-            bookDataFile.saveBooks(bookManager.bookList);
-                
             //feedback part
             txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: green;");
             txtFeedback.setText(resultMsg);
