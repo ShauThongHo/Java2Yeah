@@ -161,6 +161,18 @@ public class project extends Application {
             centerContentArea.getChildren().addAll(borrowView.createView(bookManager, btnstyle, btnHoverStyle));
         });
 
+        // return status 
+        buttonReturn.setOnAction(e -> {
+            centerContentArea.getChildren().clear();
+            centerContentArea.getChildren().addAll(returnView.createReturnView(bookManager, btnstyle, btnHoverStyle));
+        });
+
+        // dashboard / stats status
+        buttonDashboard.setOnAction(e -> {
+            centerContentArea.getChildren().clear();
+            centerContentArea.getChildren().addAll(returnView.createStatsView(bookManager, btnstyle, btnHoverStyle));
+        });
+
         //my account part
         //click my account status
         buttonMyAccount.setOnAction(e -> {
