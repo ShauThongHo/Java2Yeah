@@ -17,8 +17,8 @@ public class memberView {
         // inside the ScrollPane, where the theme's derived text color can
         // otherwise resolve to white.
         String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2d3748;";
-        String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
-        String feedbackStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
+        String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-background-color: #f8fafc; -fx-background-radius: 8px; -fx-border-color: #cbd5e0; -fx-border-radius: 8px; -fx-padding: 8px;";
+        String feedbackStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-background-color: #f8fafc; -fx-background-radius: 8px; -fx-border-color: #cbd5e0; -fx-border-radius: 8px;";
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
@@ -28,12 +28,13 @@ public class memberView {
         VBox outer = new VBox();
         outer.setAlignment(Pos.CENTER);
         outer.setFillWidth(false);
-        outer.setPadding(new Insets(10));
+        outer.setPadding(new Insets(30));
 
         // main account card
-        VBox card = new VBox(15);
+        VBox card = new VBox(25);
         card.setAlignment(Pos.CENTER);
-        card.setMaxWidth(720);
+        card.setMinWidth(650);
+        card.setMaxWidth(900);
         card.setStyle("-fx-background-color: rgba(255, 255, 255, 0.92); -fx-background-radius: 15px; -fx-padding: 20px;");
 
         Text title = new Text("My Library Account");
@@ -45,26 +46,26 @@ public class memberView {
         lblName.setStyle(labelStyle);
         TextField txtName = new TextField();
         txtName.setPromptText("Enter your name...");
-        txtName.setPrefWidth(320);
+        txtName.setPrefWidth(450);
         txtName.setStyle(fldStyle);
 
         Label lblPhone = new Label("Phone (optional):");
         lblPhone.setStyle(labelStyle);
         TextField txtPhone = new TextField();
         txtPhone.setPromptText("Phone number");
-        txtPhone.setPrefWidth(320);
+        txtPhone.setPrefWidth(450);
         txtPhone.setStyle(fldStyle);
 
         Label lblEmail = new Label("Email (optional):");
         lblEmail.setStyle(labelStyle);
         TextField txtEmail = new TextField();
         txtEmail.setPromptText("Email address");
-        txtEmail.setPrefWidth(320);
+        txtEmail.setPrefWidth(450);
         txtEmail.setStyle(fldStyle);
 
         GridPane grid = new GridPane();
-        grid.setHgap(15);
-        grid.setVgap(12);
+        grid.setHgap(25);
+        grid.setVgap(20);
         grid.setAlignment(Pos.CENTER);
         grid.add(lblName, 0, 0);  grid.add(txtName, 1, 0);
         grid.add(lblPhone, 0, 1); grid.add(txtPhone, 1, 1);
@@ -82,14 +83,14 @@ public class memberView {
         btnClear.setOnMouseEntered(e -> btnClear.setStyle(btnHoverStyle));
         btnClear.setOnMouseExited(e -> btnClear.setStyle(btnStyle));
 
-        HBox btnBox = new HBox(20);
+        HBox btnBox = new HBox(25);
         btnBox.setAlignment(Pos.CENTER);
         btnBox.getChildren().addAll(btnLogin, btnClear);
 
         // --- feedback ---
         TextArea txtFeedback = new TextArea();
-        txtFeedback.setMaxWidth(560);
-        txtFeedback.setMaxHeight(60);
+        txtFeedback.setMaxWidth(680);
+        txtFeedback.setMaxHeight(80);
         txtFeedback.setEditable(false);
         txtFeedback.setWrapText(true);
         txtFeedback.setStyle(feedbackStyle);
@@ -100,7 +101,7 @@ public class memberView {
         sectionTitle.setFill(Color.valueOf("#2d3748"));
         sectionTitle.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
 
-        VBox myBooksBox = new VBox(10);
+        VBox myBooksBox = new VBox(15);
         myBooksBox.setAlignment(Pos.TOP_CENTER);
         myBooksBox.setStyle("-fx-background-color: rgba(237, 242, 247, 0.85); -fx-background-radius: 10px; -fx-padding: 12px;");
 
@@ -190,9 +191,9 @@ public class memberView {
 
     /** Builds one small card for a single borrowed book. */
     private static VBox createBookCard(borrowedBook bb) {
-        VBox bookCard = new VBox(4);
-        bookCard.setMaxWidth(620);
-        bookCard.setPadding(new Insets(10, 14, 10, 14));
+        VBox bookCard = new VBox(8);
+        bookCard.setMaxWidth(720);
+        bookCard.setPadding(new Insets(15, 22, 15, 22));
         bookCard.setStyle("-fx-background-color: white; -fx-background-radius: 8px; -fx-border-color: #cbd5e0; -fx-border-radius: 8px;");
 
         Text txtTitle = new Text(bb.getTitle());

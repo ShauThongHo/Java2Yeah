@@ -15,7 +15,7 @@ public class memberDataFile {
             File file = new File(FILE_NAME);
 
             // no file yet means no members have registered - create it empty
-            if (!file.exists()) {
+            if (! file.exists()) {
                 file.createNewFile();
                 return members;
             }
