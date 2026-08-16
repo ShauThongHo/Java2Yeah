@@ -8,8 +8,8 @@ public class memberDataFile {
     // the file where the reader profiles are stored
     private static final String FILE_NAME = "members_data.csv";
 
-    public static member[] loadMembers() {
-        member[] members = new member[0];   // start with an empty array
+    public static Member[] loadMembers() {
+        Member[] members = new Member[0];   // start with an empty array
 
         try {
             File file = new File(FILE_NAME);
@@ -32,7 +32,7 @@ public class memberDataFile {
             counter.close();
 
             // STEP 2: create an array that is exactly the right size
-            members = new member[count];
+            members = new Member[count];
 
             // STEP 3: second pass - read each line and turn it into a Member
             Scanner reader = new Scanner(file);
@@ -50,7 +50,7 @@ public class memberDataFile {
 
                 // only use the line if it really has 5 parts
                 if (parts.length == 5) {
-                    members[index] = new member(
+                    members[index] = new Member(
                             parts[0],   // member id
                             parts[1],   // name
                             parts[2],   // phone
@@ -64,7 +64,7 @@ public class memberDataFile {
             // some lines may have been skipped (malformed) - trim the array
             // so there are no null holes left at the end
             if (index < members.length) {
-                member[] trimmed = new member[index];
+                Member[] trimmed = new Member[index];
                 System.arraycopy(members, 0, trimmed, 0, index);
                 members = trimmed;
             }
@@ -76,7 +76,7 @@ public class memberDataFile {
         return members;
     }
 
-    public static void saveMembers(member[] members) {
+    public static void saveMembers(Member[] members) {
         PrintWriter writer = null;
 
         try {
@@ -85,7 +85,7 @@ public class memberDataFile {
 
             // write one line per member
             for (int i = 0; i < members.length; i++) {
-                member m = members[i];
+                Member m = members[i];
                 writer.println(m.getMemberId() + ","
                         + m.getName() + ","
                         + m.getPhone() + ","
@@ -103,7 +103,7 @@ public class memberDataFile {
         }
     }
 
-    public static String nextMemberId(member[] members) {
+    public static String nextMemberId(Member[] members) {
         int maxNumber = 0;
 
         for (int i = 0; i < members.length; i++) {
@@ -129,8 +129,8 @@ public class memberDataFile {
         return "M" + String.format("%03d", maxNumber + 1);
     }
 
-    public static member[] growMemberArray(member[] oldArray) {
-        member[] newArray = new member[oldArray.length + 1];
+    public static Member[] growMemberArray(Member[] oldArray) {
+        Member[] newArray = new Member[oldArray.length + 1];
         for (int i = 0; i < oldArray.length; i++) {
             newArray[i] = oldArray[i];
         }

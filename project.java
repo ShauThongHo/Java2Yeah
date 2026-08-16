@@ -167,7 +167,7 @@ public class project extends Application {
         //dashboard / stats part
         buttonDashboard.setOnAction(e -> {
             centerContentArea.getChildren().clear();
-            centerContentArea.getChildren().addAll(returnView.createStatsView(bookManager, btnstyle, btnHoverStyle));
+            centerContentArea.getChildren().addAll(statsView.createStatsView(bookManager, btnstyle, btnHoverStyle));
         });
 
         //my account part

@@ -139,9 +139,9 @@ public class memberView {
                 return;
             }
 
-            member[] members = memberDataFile.loadMembers();
-            member found = null;
-            for (member m : members) {
+            Member[] members = memberDataFile.loadMembers();
+            Member found = null;
+            for (Member m : members) {
                 if (m != null && m.getName().equalsIgnoreCase(name)) {
                     found = m;
                     break;
@@ -151,12 +151,12 @@ public class memberView {
             if (found == null) {
                 // not registered yet -> create a new member profile
                 String newId = memberDataFile.nextMemberId(members);
-                member newMember = new member(
+                Member newMember = new Member(
                         newId, name,
                         txtPhone.getText().trim(),
                         txtEmail.getText().trim(),
                         LocalDate.now().toString());
-                member[] updated = memberDataFile.growMemberArray(members);
+                Member[] updated = memberDataFile.growMemberArray(members);
                 updated[updated.length - 1] = newMember;
                 memberDataFile.saveMembers(updated);
 

@@ -1,4 +1,4 @@
-class member {
+class Member {
 
     private String memberId;
     private String name;
@@ -6,7 +6,7 @@ class member {
     private String email;
     private String registerDate;
 
-    public member(String memberId, String name, String phone, String email, String registerDate) {
+    public Member(String memberId, String name, String phone, String email, String registerDate) {
         this.memberId = memberId;
         this.name = name;
         this.phone = phone;
