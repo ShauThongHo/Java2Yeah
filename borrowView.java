@@ -13,16 +13,16 @@ public class borrowView {
         container.setAlignment(Pos.CENTER);
         container.setMaxWidth(700);
         container.setMaxHeight(580);
-        container.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15px; -fx-padding: 20px;");
+        container.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 25px; -fx-padding: 20px;");
 
         Text title = new Text("Borrow Book Form");
         title.setFill(Color.valueOf("#2d3748"));
         title.setFont(Font.font("Courier New", FontWeight.BOLD, 25));
 
         // style
-        String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2d3748;";
-        String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
-        String feedbackStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
+        String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2d3748;";
+        String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 16px;";
+        String feedbackStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 16px;";
 
         //label book
         Label lblBook = new Label("Select Book:");

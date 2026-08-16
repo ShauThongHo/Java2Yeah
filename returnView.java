@@ -17,48 +17,86 @@ public class returnView {
         container.setMaxHeight(550);
         container.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15px; -fx-padding: 20px;");
 
-        Text title = new Text("Book Return & Stock Update");
+        Text title = new Text("Book Return");
         title.setFill(Color.valueOf("#2d3748"));
         title.setFont(Font.font("Courier New", FontWeight.BOLD, 25));
-
-        TableView<Book> table = new TableView<>();
-        table.setPrefHeight(220);
-        table.setStyle("-fx-font-family: 'Courier New';");
-
-        TableColumn<Book, String> colTitle = new TableColumn<>("Title");
-        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colTitle.setPrefWidth(200);
-
-        TableColumn<Book, String> colAuthor = new TableColumn<>("Author");
-        colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
-        colAuthor.setPrefWidth(150);
-
-        TableColumn<Book, String> colIsbn = new TableColumn<>("ISBN");
-        colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        colIsbn.setPrefWidth(130);
-
-        TableColumn<Book, String> colCategory = new TableColumn<>("Category");
-        colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
-        colCategory.setPrefWidth(120);
-
-        TableColumn<Book, Integer> colQty = new TableColumn<>("Quantity");
-        colQty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        colQty.setPrefWidth(100);
-
-        table.getColumns().addAll(colTitle, colAuthor, colIsbn, colCategory, colQty);
-        table.getItems().setAll(bookMgr.bookList);
-
-        HBox actionBox = new HBox(15);
-        actionBox.setAlignment(Pos.CENTER);
 
         String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-font-weight: bold;";
         String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
 
+        TableView<borrowedBook> table = new TableView<>();
+        table.setPrefHeight(220);
+        table.setStyle("-fx-font-family: 'Courier New';");
+
+        TableColumn<borrowedBook, String> colTitle = new TableColumn<>("Title");
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colTitle.setPrefWidth(200);
+
+        TableColumn<borrowedBook, String> colIsbn = new TableColumn<>("ISBN");
+        colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        colIsbn.setPrefWidth(130);
+
+        TableColumn<borrowedBook, String> colBorrowDate = new TableColumn<>("Borrow Date");
+        colBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        colBorrowDate.setPrefWidth(120);
+
+        TableColumn<borrowedBook, String> colDueDate = new TableColumn<>("Due Date");
+        colDueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
+        colDueDate.setPrefWidth(120);
+
+        TableColumn<borrowedBook, Integer> colDays = new TableColumn<>("Days");
+        colDays.setCellValueFactory(new PropertyValueFactory<>("borrowDays"));
+        colDays.setPrefWidth(70);
+
+        table.getColumns().addAll(colTitle, colIsbn, colBorrowDate, colDueDate, colDays);
+
+        Label customPlaceholder = new Label("No content");
+        customPlaceholder.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;");
+        table.setPlaceholder(customPlaceholder);
+
+        TextField txtIsbn = new TextField();
+        txtIsbn.setPromptText("Click a book above...");
+        txtIsbn.setStyle(fldStyle);
+        txtIsbn.setEditable(true);
+
+        table.setRowFactory(tv -> {
+            TableRow<borrowedBook> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    borrowedBook clickedBook = row.getItem();
+                    txtIsbn.setText(clickedBook.getIsbn());
+                }
+            });
+            return row;
+        });
+
+        HBox actionBox = new HBox(15);
+        actionBox.setAlignment(Pos.CENTER);
+
         Label lblIsbn = new Label("Enter ISBN to Return:");
         lblIsbn.setStyle(labelStyle);
 
-        TextField txtIsbn = new TextField();
-        txtIsbn.setPromptText("ISBN numbers...");
+        txtIsbn.setPromptText("Click a book above...");
+        txtIsbn.setPrefWidth(180);
+        txtIsbn.setStyle(fldStyle);
+
+        borrowManager bmInitial = new borrowManager();
+        table.getItems().setAll(bmInitial.borrowedBooks);
+
+        table.setRowFactory(tv -> {
+            TableRow <borrowedBook> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(! row.isEmpty() && event.getClickCount() == 1) {
+                    borrowedBook clickedBook = row.getItem();
+                    txtIsbn.setText(clickedBook.getIsbn());
+                }
+            });
+
+            return row;
+        });
+
+        txtIsbn.setPromptText("Click a book above...");
+        txtIsbn.setPrefWidth(180);
         txtIsbn.setStyle(fldStyle);
 
         Button btnReturn = new Button("Confirm Return");
@@ -83,6 +121,8 @@ public class returnView {
         btnClear.setOnAction(e -> {
             txtIsbn.clear();
             txtFeedback.clear();
+            borrowManager bm =new borrowManager();
+            table.getItems().setAll(bm.borrowedBooks);
         });
 
         btnReturn.setOnAction(e -> {
@@ -102,17 +142,11 @@ public class returnView {
 
                 String resultMsg = bm.returnBook(isbnInput, bookMgr);
 
-                // refresh the stock table so the incremented quantity is visible
-                table.getItems().setAll(bookMgr.bookList);
-
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: green;");
                 txtFeedback.setText(resultMsg);
                 txtIsbn.clear();
 
-            } catch (borrowException ex) {
-                txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: red;");
-                txtFeedback.setText(ex.getMessage());
-            } catch (IllegalArgumentException ex) {
+            } catch (borrowException | IllegalArgumentException ex) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: red;");
                 txtFeedback.setText(ex.getMessage());
             }
