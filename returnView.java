@@ -6,9 +6,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import java.util.Arrays;
 
 public class returnView {
 
+    @SuppressWarnings("unchecked")
     public static VBox createReturnView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(15);
         container.setAlignment(Pos.CENTER);
@@ -108,7 +110,11 @@ public class returnView {
                     return;
                 }
 
+                // remove any matching borrow record so history stays accurate
+                bookManager.removeBorrowedBook(isbnInput);
+
                 bookDataFile.saveBooks(bookManager.bookList);
+                borrowDataFile.saveBorrows(bookManager.borrowedBooks);
                 table.getItems().setAll(bookManager.bookList);
 
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: green;");
@@ -129,6 +135,7 @@ public class returnView {
         return container;
     }
 
+    @SuppressWarnings("unchecked")
     public static VBox createStatsView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(20);
         container.setAlignment(Pos.CENTER);
@@ -173,8 +180,8 @@ public class returnView {
         btnRefresh.setOnMouseExited(e -> btnRefresh.setStyle(btnStyle));
 
         Runnable calculateStats = () -> {
-            int titles = bookManager.bookList.size();
-            int totalQty = bookManager.bookList.stream().mapToInt(Book::getQuantity).sum();
+            int titles = bookManager.bookList.length;
+            int totalQty = Arrays.stream(bookManager.bookList).mapToInt(Book::getQuantity).sum();
 
             lblTitlesVal.setText(String.valueOf(titles));
             lblQtyVal.setText(String.valueOf(totalQty));

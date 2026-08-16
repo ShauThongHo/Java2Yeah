@@ -131,4 +131,33 @@ class BookManager {
     public BorrowedBook getBorrowedBook(int i) {
         return borrowedBooks[i];
     }
+
+    // ------------------------------------------------------------------
+    // removeBorrowedBook(): removes the first borrow record that matches
+    // the given ISBN (used when a book is returned). Returns true if a
+    // record was removed, false otherwise.
+    // ------------------------------------------------------------------
+    public boolean removeBorrowedBook(String isbn) {
+        int found = -1;
+        for (int i = 0; i < borrowedBooks.length; i++) {
+            if (borrowedBooks[i].getIsbn().equals(isbn)) {
+                found = i;
+                break;
+            }
+        }
+
+        if (found == -1) {
+            return false;
+        }
+
+        BorrowedBook[] newArray = new BorrowedBook[borrowedBooks.length - 1];
+        for (int i = 0, j = 0; i < borrowedBooks.length; i++) {
+            if (i != found) {
+                newArray[j] = borrowedBooks[i];
+                j++;
+            }
+        }
+        borrowedBooks = newArray;
+        return true;
+    }
 }
