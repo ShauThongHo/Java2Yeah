@@ -10,6 +10,24 @@ public class borrowManager {
 
     public String borrowBook(String isbn, String borrowerName, int borrowDays, bookManager bookMgr) throws borrowException {
         bookManager.sanitizeIsbn(isbn);
+
+        if (borrowerName == null || borrowerName.trim().isEmpty()) {
+            throw new borrowException("Error: Borrower name cannot be empty!");
+        }
+    
+        Member[] registeredMembers = memberDataFile.loadMembers();
+        boolean isRegistered = false;
+        for (Member m : registeredMembers) {
+            if (m != null && m.getName().equalsIgnoreCase(borrowerName.trim())) {
+                isRegistered = true;
+                break;
+            }
+        }
+    
+        if (!isRegistered) {
+            throw new borrowException("Access Denied: \"" + borrowerName + "\" is not registered! Please go to 'My Account' to register first.");
+        }
+
         int index = bookMgr.findBookIndex(isbn);
 
         if(index == -1) {

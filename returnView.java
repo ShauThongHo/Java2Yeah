@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import java.util.ArrayList;
 
 public class returnView {
 
@@ -70,37 +71,30 @@ public class returnView {
             return row;
         });
 
+        if (!project.loggedInUser.isEmpty()) {
+            borrowManager bm = new borrowManager();
+            ArrayList<borrowedBook> userActiveBorrows = new ArrayList<>();
+            for (borrowedBook bb : bm.borrowedBooks) {
+                if (bb.getBorrowerName() != null && bb.getBorrowerName().trim().equalsIgnoreCase(project.loggedInUser)) {
+                    userActiveBorrows.add(bb);
+                }
+            }
+            table.getItems().setAll(userActiveBorrows);
+        }
+
         HBox actionBox = new HBox(15);
         actionBox.setAlignment(Pos.CENTER);
 
         Label lblIsbn = new Label("Enter ISBN to Return:");
         lblIsbn.setStyle(labelStyle);
-
-        txtIsbn.setPromptText("Click a book above...");
         txtIsbn.setPrefWidth(180);
-        txtIsbn.setStyle(fldStyle);
-
-        borrowManager bmInitial = new borrowManager();
-        table.getItems().setAll(bmInitial.borrowedBooks);
-
-        table.setRowFactory(tv -> {
-            TableRow <borrowedBook> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(! row.isEmpty() && event.getClickCount() == 1) {
-                    borrowedBook clickedBook = row.getItem();
-                    txtIsbn.setText(clickedBook.getIsbn());
-                }
-            });
-
-            return row;
-        });
-
-        txtIsbn.setPromptText("Click a book above...");
-        txtIsbn.setPrefWidth(180);
-        txtIsbn.setStyle(fldStyle);
 
         Button btnReturn = new Button("Confirm Return");
         Button btnClear = new Button("Clear");
+
+        txtIsbn.setPromptText("Click a book above...");
+        txtIsbn.setPrefWidth(180);
+        txtIsbn.setStyle(fldStyle);
 
         btnReturn.setStyle(btnStyle);
         btnReturn.setOnMouseEntered(e -> btnReturn.setStyle(btnHoverStyle));
@@ -121,8 +115,6 @@ public class returnView {
         btnClear.setOnAction(e -> {
             txtIsbn.clear();
             txtFeedback.clear();
-            borrowManager bm =new borrowManager();
-            table.getItems().setAll(bm.borrowedBooks);
         });
 
         btnReturn.setOnAction(e -> {
@@ -141,6 +133,13 @@ public class returnView {
                 borrowManager bm = new borrowManager();
 
                 String resultMsg = bm.returnBook(isbnInput, bookMgr);
+                ArrayList<borrowedBook> userActiveBorrows = new ArrayList<>();
+                for (borrowedBook bb : bm.borrowedBooks) {
+                    if (bb.getBorrowerName() != null && bb.getBorrowerName().trim().equalsIgnoreCase(project.loggedInUser)) {
+                        userActiveBorrows.add(bb);
+                    }
+                }
+                table.getItems().setAll(userActiveBorrows);
 
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: green;");
                 txtFeedback.setText(resultMsg);

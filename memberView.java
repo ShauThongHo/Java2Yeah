@@ -7,8 +7,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 
 public class memberView {
 
@@ -96,49 +94,16 @@ public class memberView {
         txtFeedback.setStyle(feedbackStyle);
         txtFeedback.setPromptText("System feedback will appear here...");
 
-        // --- "My Borrowed Books" section ---
-        Text sectionTitle = new Text("My Borrowed Books");
-        sectionTitle.setFill(Color.valueOf("#2d3748"));
-        sectionTitle.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
-
-        VBox myBooksBox = new VBox(15);
-        myBooksBox.setAlignment(Pos.TOP_CENTER);
-        myBooksBox.setStyle("-fx-background-color: rgba(237, 242, 247, 0.85); -fx-background-radius: 10px; -fx-padding: 12px;");
-
-        Text placeholder = new Text("Login / register above to see your borrowed books.");
-        placeholder.setFill(Color.valueOf("#718096"));
-        placeholder.setFont(Font.font("Courier New", FontWeight.BOLD, 14));
-        myBooksBox.getChildren().add(placeholder);
-
-        // shows the cards for the reader currently typed in the name field
-        Runnable refreshBooks = () -> {
-            String name = txtName.getText().trim();
-            myBooksBox.getChildren().clear();
-            boolean any = false;
-
-            borrowManager bm = new borrowManager();
-
-            for (borrowedBook bb : bm.borrowedBooks) {
-                if (bb.getBorrowerName().equalsIgnoreCase(name)) {
-                    any = true;
-                    myBooksBox.getChildren().add(createBookCard(bb));
-                }
-            }
-            if (!any) {
-                Text empty = new Text("No borrowed books found for \"" + name + "\".");
-                empty.setFill(Color.valueOf("#718096"));
-                empty.setFont(Font.font("Courier New", FontWeight.BOLD, 14));
-                myBooksBox.getChildren().add(empty);
-            }
-        };
-
         btnLogin.setOnAction(e -> {
             String name = txtName.getText().trim();
+            project.loggedInUser = name;
             if (name.isEmpty()) {
                 txtFeedback.setStyle(feedbackStyle + " -fx-text-fill: red;");
                 txtFeedback.setText("Error: Please enter your name!");
                 return;
             }
+
+            project.loggedInUser = name;
 
             Member[] members = memberDataFile.loadMembers();
             Member found = null;
@@ -167,8 +132,6 @@ public class memberView {
                 txtFeedback.setStyle(feedbackStyle + " -fx-text-fill: green;");
                 txtFeedback.setText("Welcome back, " + found.getName() + "! (Member ID: " + found.getMemberId() + ")");
             }
-
-            refreshBooks.run();
         });
 
         btnClear.setOnAction(e -> {
@@ -176,63 +139,12 @@ public class memberView {
             txtPhone.clear();
             txtEmail.clear();
             txtFeedback.clear();
-            myBooksBox.getChildren().clear();
-            Text ph = new Text("Login / register above to see your borrowed books.");
-            ph.setFill(Color.valueOf("#718096"));
-            ph.setFont(Font.font("Courier New", FontWeight.BOLD, 14));
-            myBooksBox.getChildren().add(ph);
+            project.loggedInUser = "";
         });
 
-        card.getChildren().addAll(title, grid, btnBox, txtFeedback, sectionTitle, myBooksBox);
+        card.getChildren().addAll(title, grid, btnBox, txtFeedback);
         outer.getChildren().add(card);
         scrollPane.setContent(outer);
         return scrollPane;
-    }
-
-    /** Builds one small card for a single borrowed book. */
-    private static VBox createBookCard(borrowedBook bb) {
-        VBox bookCard = new VBox(8);
-        bookCard.setMaxWidth(720);
-        bookCard.setPadding(new Insets(15, 22, 15, 22));
-        bookCard.setStyle("-fx-background-color: white; -fx-background-radius: 8px; -fx-border-color: #cbd5e0; -fx-border-radius: 8px;");
-
-        Text txtTitle = new Text(bb.getTitle());
-        txtTitle.setFill(Color.valueOf("#2d3748"));
-        txtTitle.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
-
-        Text txtBorrowed = new Text("Borrowed on: " + bb.getBorrowDate());
-        txtBorrowed.setFill(Color.valueOf("#4a5568"));
-        txtBorrowed.setFont(Font.font("Courier New", 13));
-
-        Text txtDue = new Text("Due: " + bb.getDueDate());
-        txtDue.setFill(Color.valueOf("#4a5568"));
-        txtDue.setFont(Font.font("Courier New", 13));
-
-        Text txtStatus = new Text();
-        txtStatus.setFont(Font.font("Courier New", FontWeight.BOLD, 14));
-
-        long daysLeft;
-        try {
-            daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(bb.getDueDate()));
-        } catch (DateTimeParseException e) {
-            txtStatus.setText("Unreadable date - check record");
-            txtStatus.setFill(Color.valueOf("#e53e3e")); // red
-            bookCard.getChildren().addAll(txtTitle, txtBorrowed, txtDue, txtStatus);
-            return bookCard;
-        }
-
-        if (daysLeft < 0) {
-            txtStatus.setText("Overdue by " + (-daysLeft) + " day(s)");
-            txtStatus.setFill(Color.valueOf("#e53e3e")); // red
-        } else if (daysLeft == 0) {
-            txtStatus.setText("Due today");
-            txtStatus.setFill(Color.valueOf("#e53e3e")); // red
-        } else {
-            txtStatus.setText("On time - " + daysLeft + " day(s) left");
-            txtStatus.setFill(Color.valueOf("#38a169")); // green
-        }
-
-        bookCard.getChildren().addAll(txtTitle, txtBorrowed, txtDue, txtStatus);
-        return bookCard;
     }
 }

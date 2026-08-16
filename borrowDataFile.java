@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class borrowDataFile {
@@ -9,7 +10,40 @@ public class borrowDataFile {
         File file = new File(FILE_NAME);
 
         if (!file.exists()) {
-            return list;
+            try {
+                file.createNewFile();
+                
+                borrowedBook initialBorrow1 = new borrowedBook(
+                    "Harry Potter Philosopher Stone", 
+                    "J.K.Rowling", 
+                    "9780747532699", 
+                    "Fantasy", 
+                    1, 
+                    "john",                  
+                    LocalDate.now().toString(),   
+                    7,                            
+                    LocalDate.now().plusDays(7).toString() 
+                );
+
+                borrowedBook initialBorrow2 = new borrowedBook(
+                    "Tsubaki Stationary Store", 
+                    "Ito Ogawa", 
+                    "9798217047314", 
+                    "Literacture", 
+                    1, 
+                    "john",                  
+                    LocalDate.now().toString(),   
+                    5,                            
+                    LocalDate.now().plusDays(5).toString() 
+                );
+
+                list.add(initialBorrow1);
+                list.add(initialBorrow2);
+                saveBorrows(list);
+                return list;
+            } catch (IOException e) {
+                System.err.println("Error creating initial borrows file: " + e.getMessage());
+            }
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {

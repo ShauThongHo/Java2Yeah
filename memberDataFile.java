@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class memberDataFile {
@@ -9,19 +10,25 @@ public class memberDataFile {
     private static final String FILE_NAME = "members_data.csv";
 
     public static Member[] loadMembers() {
-        Member[] members = new Member[0];   // start with an empty array
+        File file = new File(FILE_NAME);
 
-        try {
-            File file = new File(FILE_NAME);
-
-            // no file yet means no members have registered - create it empty
-            if (! file.exists()) {
+        // no file yet means no members have registered - create it empty
+        if (! file.exists()) {
+            try{
                 file.createNewFile();
-                return members;
+                Member [] initialMembers = {
+                    new Member("M001", "John", "0123456789", "john@gmail.com", LocalDate.now().toString())
+                };
+                saveMembers(initialMembers);
+                return initialMembers;
+            } catch(IOException ex) {
+                System.err.println("Error creating initial members file: " + ex.getMessage());
             }
+        }
 
-            // STEP 1: first pass - count how many profiles are in the file.
-            // We need the count first because arrays have a fixed size.
+        Member[] members = new Member[0];
+
+        try{
             int count = 0;
             Scanner counter = new Scanner(file);
             while (counter.hasNextLine()) {
@@ -68,7 +75,6 @@ public class memberDataFile {
                 System.arraycopy(members, 0, trimmed, 0, index);
                 members = trimmed;
             }
-
         } catch (IOException e) {
             System.err.println("Error reading members file: " + e.getMessage());
         }

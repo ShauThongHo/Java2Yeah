@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 public class project extends Application {
     private bookManager bookManager = new bookManager();
 
+    public static String loggedInUser = "";
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         //main menu
