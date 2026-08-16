@@ -98,7 +98,9 @@ public class returnView {
 
                 // only an ISBN with an active borrow record may be returned;
                 // BookManager rejects phantom returns without touching inventory
-                String resultMsg = bookManager.returnBook(isbnInput);
+                borrowManager bm = new borrowManager();
+
+                String resultMsg = bm.returnBook(isbnInput, bookManager);
 
                 // refresh the stock table so the incremented quantity is visible
                 table.getItems().setAll(bookManager.bookList);
@@ -107,7 +109,7 @@ public class returnView {
                 txtFeedback.setText(resultMsg);
                 txtIsbn.clear();
 
-            } catch (BorrowException ex) {
+            } catch (borrowException ex) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: red;");
                 txtFeedback.setText(ex.getMessage());
             } catch (IllegalArgumentException ex) {
@@ -121,7 +123,6 @@ public class returnView {
         return container;
     }
 
-    @SuppressWarnings("unchecked")
     public static VBox createStatsView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(20);
         container.setAlignment(Pos.CENTER);

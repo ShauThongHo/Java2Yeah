@@ -1,19 +1,4 @@
-import java.time.LocalDate;
-
-/**
- * Member: a reader's personal profile in the library system.
- *
- * This is a purely USER-FACING feature. There are no admin roles and no
- * member management console - a reader only ever sees their own profile.
- *
- * The profile stores:
- *   - memberId:     auto-generated ID, e.g. M001
- *   - name:         the reader's name (used to link their borrow records)
- *   - phone:        optional contact number
- *   - email:        optional contact email
- *   - registerDate: the day the profile was created, e.g. 2026-08-15
- */
-class Member {
+class member {
 
     private String memberId;
     private String name;
@@ -21,7 +6,7 @@ class Member {
     private String email;
     private String registerDate;
 
-    public Member(String memberId, String name, String phone, String email, String registerDate) {
+    public member(String memberId, String name, String phone, String email, String registerDate) {
         this.memberId = memberId;
         this.name = name;
         this.phone = phone;

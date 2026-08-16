@@ -6,20 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
-/**
- * memberView: "My Library Account" - login/register form plus the reader's
- * borrowed books rendered as cards.
- *
- * The reader types their name (phone/email optional). If the name is already
- * registered they are welcomed back with their member ID; otherwise a new
- * member profile is created. The bottom section then shows every borrow record
- * belonging to that reader as a small card.
- */
 public class memberView {
 
     public static ScrollPane createView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
@@ -124,7 +114,10 @@ public class memberView {
             String name = txtName.getText().trim();
             myBooksBox.getChildren().clear();
             boolean any = false;
-            for (BorrowedBook bb : bookManager.borrowedBooks) {
+
+            borrowManager bm = new borrowManager();
+
+            for (borrowedBook bb : bm.borrowedBooks) {
                 if (bb.getBorrowerName().equalsIgnoreCase(name)) {
                     any = true;
                     myBooksBox.getChildren().add(createBookCard(bb));
@@ -146,9 +139,9 @@ public class memberView {
                 return;
             }
 
-            Member[] members = memberDataFile.loadMembers();
-            Member found = null;
-            for (Member m : members) {
+            member[] members = memberDataFile.loadMembers();
+            member found = null;
+            for (member m : members) {
                 if (m != null && m.getName().equalsIgnoreCase(name)) {
                     found = m;
                     break;
@@ -158,12 +151,12 @@ public class memberView {
             if (found == null) {
                 // not registered yet -> create a new member profile
                 String newId = memberDataFile.nextMemberId(members);
-                Member newMember = new Member(
+                member newMember = new member(
                         newId, name,
                         txtPhone.getText().trim(),
                         txtEmail.getText().trim(),
                         LocalDate.now().toString());
-                Member[] updated = memberDataFile.growMemberArray(members);
+                member[] updated = memberDataFile.growMemberArray(members);
                 updated[updated.length - 1] = newMember;
                 memberDataFile.saveMembers(updated);
 
@@ -196,7 +189,7 @@ public class memberView {
     }
 
     /** Builds one small card for a single borrowed book. */
-    private static VBox createBookCard(BorrowedBook bb) {
+    private static VBox createBookCard(borrowedBook bb) {
         VBox bookCard = new VBox(4);
         bookCard.setMaxWidth(620);
         bookCard.setPadding(new Insets(10, 14, 10, 14));

@@ -1,5 +1,5 @@
-public class BorrowException extends Exception {
-    public BorrowException(String message) {
+public class borrowException extends Exception {
+    public borrowException(String message) {
         super(message);
     }
 }

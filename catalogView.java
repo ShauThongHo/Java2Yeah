@@ -30,7 +30,7 @@ public class catalogView {
         catalogBox.getChildren().addAll(title);
 
         //display catalog content
-        if(bookManager.bookList.length == 0) {
+        if(bookManager.bookList.size() == 0) {
             Text emptyText = new Text("No books available in the catalog.");
             emptyText.setFill(Color.LIGHTGRAY);
             emptyText.setFont(Font.font("Courier New", FontWeight.BOLD, 20));

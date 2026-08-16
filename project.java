@@ -101,9 +101,6 @@ public class project extends Application {
         //button return
         Button buttonReturn = new Button("Return");
 
-        //button my account
-        Button buttonMyAccount = new Button("My Account");
-
         //button dashboard
         Button buttonDashboard = new Button("Dashboard");
 
@@ -187,6 +184,7 @@ public class project extends Application {
             }
         });
 
+        //quit part
         buttonQuit.setOnAction(e -> {
             quitAction.handleQuit();
         });

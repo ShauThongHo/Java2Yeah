@@ -1,42 +1,41 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.io.*;
+import java.util.ArrayList;
 
-/**
- * bookDataFile: handles saving and loading the Book inventory
- * using a plain text CSV file (books_data.csv).
- *
- * Each line in the file stores:
- *   Title, Author, ISBN, Category, Quantity
- *
- * We use Scanner (to read) and PrintWriter (to write).
- * No databases are used - only a simple text file.
- */
 public class bookDataFile {
-
-    // the file where the book inventory is stored
     private static final String FILE_NAME = "books_data.csv";
-
+    //load book data from csv file
     public static ArrayList<Book> loadBooks() {
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Book> bookList = new ArrayList<>();
         File file = new File(FILE_NAME);
 
-        try {
-            if (!file.exists()) {
+        //if file not exist then create file
+        if (! file.exists()) {
+            try{
                 file.createNewFile();
-
-                Book[] defaultBooks = {
-                    new Book("Harry Potter Philosopher Stone", "J.K.Rowling", "9780747532699", "Fantasy", 1),
-                    new Book("Harry Potter Chamber of Secrets", "J.K.Rowling", "0747538492", "Fantasy", 1),
-                    new Book("Harry Potter Goblet of Fire", "J.K.Rowling", "0747550794", "Fantasy", 1)
-                };
-
-                saveBooks(defaultBooks);   // write the defaults into the file
-                return defaultBooks;       // and return them to the program
+            } catch(IOException e) {
+                System.err.println("Error creating new file: " + e.getMessage());
             }
 
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            Book [] books = {
+                new Book("Harry Potter Philosopher Stone", "J.K.Rowling", "9780747532699", "Fantasy", 1), 
+                new Book("Harry Potter Chamber of Secrets", "J.K.Rowling", "0747538492", "Fantasy", 1),
+                new Book("Harry Potter Goblet of Fire", "J.K.Rowling", "0747550794", "Fantasy", 1),
+                new Book("Tsubaki Stationary Store", "Ito Ogawa", "9798217047314", "Literacture", 1),
+                new Book("Tsubaki Stationary Store", "Ito Ogawa", "9781529994865", "Literacture", 1),
+                new Book("Journey Under the mIdnight Sun", "Keigo Higashino", "9787544258609", "Fantasy", 2)
+            };
+
+            for(Book b : books) {
+                bookList.add(b);
+            }
+
+            //write the list into file
+            saveBooks(bookList);
+            //return the list
+            return bookList;
+        }
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -46,20 +45,25 @@ public class bookDataFile {
                     String isbn = parts[2].trim();
                     String category = parts[3].trim();
                     int quantity = Integer.parseInt(parts[4].trim());
-                    books.add(new Book(title, author, isbn, category, quantity));
+                    bookList.add(new Book(title, author, isbn, category, quantity));
                 }
             }
-            reader.close();
-        } catch (IOException | NumberFormatException e) {
+        } catch(IOException e) {
             System.err.println("Error reading book data: " + e.getMessage());
         }
-        return books;
+
+        return bookList;
     }
 
-    public static void saveBooks(ArrayList<Book> books) {
+    public static void saveBooks(ArrayList<Book> bookList) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            for (Book b : books) {
-                writer.write(b.getTitle() + "," + b.getAuthor() + "," + b.getIsbn() + "," + b.getCategory() + "," + b.getQuantity());
+            for (Book b : bookList) {
+                String line = b.getTitle() + "," +
+                              b.getAuthor() + "," +
+                              b.getIsbn() + "," +
+                              b.getCategory() + "," +
+                              b.getQuantity();
+                writer.write(line);
                 writer.newLine();
             }
         } catch (IOException e) {

@@ -1,11 +1,10 @@
-public class BorrowedBook extends Book {
+public class borrowedBook extends Book {
     private String borrowerName;
     private String borrowDate;
     private int borrowDays;
     private String dueDate;
 
-    public BorrowedBook(String title, String author, String isbn, String category, int quantity,
-                        String borrowerName, String borrowDate, int borrowDays, String dueDate) {
+    public borrowedBook(String title, String author, String isbn, String category, int quantity, String borrowerName, String borrowDate, int borrowDays, String dueDate) {
         super(title, author, isbn, category, quantity);
         this.borrowerName = borrowerName;
         this.borrowDate = borrowDate;

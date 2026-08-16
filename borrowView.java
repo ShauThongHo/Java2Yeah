@@ -5,21 +5,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import java.time.LocalDate;
 
-/**
- * borrowView: "Borrow Book Form".
- *
- * The book is chosen from a drop-down ComboBox instead of typing an ISBN.
- * Picking a book auto-fills the read-only ISBN and Stock fields, so the user
- * only enters their name and the number of days (1-7) they want the book.
- *
- * The business logic (stock checks, ArrayList updates, CSV persistence) all
- * stays inside BookManager.borrowBook().
- */
 public class borrowView {
-
     public static VBox createView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(15);
         container.setAlignment(Pos.CENTER);
@@ -31,13 +19,12 @@ public class borrowView {
         title.setFill(Color.valueOf("#2d3748"));
         title.setFont(Font.font("Courier New", FontWeight.BOLD, 25));
 
-        // shared styles (explicit -fx-text-fill guarantees dark, readable
-        // label text regardless of the theme's derived color)
+        // style
         String labelStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2d3748;";
         String fldStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
         String feedbackStyle = "-fx-font-family: 'Courier New'; -fx-font-size: 14px;";
 
-        // --- Select Book: ComboBox listing every book from the inventory ---
+        //label book
         Label lblBook = new Label("Select Book:");
         lblBook.setStyle(labelStyle);
 
@@ -50,7 +37,7 @@ public class borrowView {
         cmbBook.setButtonCell(bookCell());
         cmbBook.setCellFactory(param -> bookCell());
 
-        // --- ISBN + Stock: read-only fields auto-filled from the selection ---
+        //label isbn
         Label lblIsbn = new Label("ISBN:");
         lblIsbn.setStyle(labelStyle);
         TextField txtIsbn = new TextField();
@@ -65,7 +52,7 @@ public class borrowView {
         txtStock.setPrefWidth(320);
         txtStock.setStyle(fldStyle);
 
-        // --- Borrower name ---
+        //label name
         Label lblName = new Label("Borrower Name:");
         lblName.setStyle(labelStyle);
         TextField txtName = new TextField();
@@ -73,7 +60,7 @@ public class borrowView {
         txtName.setPrefWidth(320);
         txtName.setStyle(fldStyle);
 
-        // --- Borrow duration, default 7 days ---
+        //label days
         Label lblDays = new Label("Borrow Duration (days):");
         lblDays.setStyle(labelStyle);
         TextField txtDays = new TextField("7");
@@ -91,8 +78,9 @@ public class borrowView {
             }
         });
 
-        // --- buttons ---
+        //button borrow
         Button btnBorrow = new Button("Confirm Borrow");
+        //button clear
         Button btnClear = new Button("Clear Form");
 
         btnBorrow.setStyle(btnStyle);
@@ -103,7 +91,7 @@ public class borrowView {
         btnClear.setOnMouseEntered(e -> btnClear.setStyle(btnHoverStyle));
         btnClear.setOnMouseExited(e -> btnClear.setStyle(btnStyle));
 
-        // --- feedback ---
+        //textarea feedback
         TextArea txtFeedback = new TextArea();
         txtFeedback.setMaxWidth(540);
         txtFeedback.setMaxHeight(70);
@@ -112,7 +100,7 @@ public class borrowView {
         txtFeedback.setStyle(feedbackStyle);
         txtFeedback.setPromptText("System feedback will appear here...");
 
-        // --- Clear Form: reset every field ---
+        //status
         btnClear.setOnAction(e -> {
             cmbBook.setValue(null);
             txtIsbn.clear();
@@ -122,7 +110,6 @@ public class borrowView {
             txtFeedback.clear();
         });
 
-        // --- Confirm Borrow ---
         btnBorrow.setOnAction(e -> {
             Book selected = cmbBook.getValue();
             String nameInput = txtName.getText().trim();
@@ -150,8 +137,10 @@ public class borrowView {
 
             try {
                 // borrowBook() validates stock/duration, updates both ArrayLists
-                // and persists both CSV files (books + borrows).
-                String resultMsg = bookManager.borrowBook(selected.getIsbn(), nameInput, days);
+                // and persists both CSV files (books + borrows)
+                borrowManager bm = new borrowManager();
+
+                String resultMsg = bm.borrowBook(selected.getIsbn(), nameInput, days, bookManager);
 
                 String dueDate = LocalDate.now().plusDays(days).toString();
                 int remaining = selected.getQuantity();   // already reduced by borrowBook()
@@ -167,7 +156,7 @@ public class borrowView {
                 txtName.clear();
                 txtDays.setText("7");
 
-            } catch (BorrowException ex) {
+            } catch (borrowException ex) {
                 txtFeedback.setStyle(feedbackStyle + " -fx-text-fill: red;");
                 txtFeedback.setText(ex.getMessage());
             } catch (IllegalArgumentException ex) {
