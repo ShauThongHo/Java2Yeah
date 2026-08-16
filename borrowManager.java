@@ -8,9 +8,9 @@ public class borrowManager {
         this.borrowedBooks = borrowDataFile.loadBorrows();
     }
 
-    public String borrowBook(String isbn, String borrowerName, int borrowDays, BookManager bookManager) throws borrowException {
-        BookManager.sanitizeIsbn(isbn);
-        int index = bookManager.findBookIndex(isbn);
+    public String borrowBook(String isbn, String borrowerName, int borrowDays, bookManager bookMgr) throws borrowException {
+        bookManager.sanitizeIsbn(isbn);
+        int index = bookMgr.findBookIndex(isbn);
 
         if(index == -1) {
             throw new borrowException("Book not found for ISBN: " + isbn);
@@ -20,7 +20,7 @@ public class borrowManager {
             throw new borrowException("Borrow duration must be between 1 and 7 days!");
         }
 
-        Book targetBook = bookManager.bookList.get(index);
+        Book targetBook = bookMgr.bookList.get(index);
         if(targetBook.getQuantity() <= 0) {
             throw new borrowException("Sorry, \""+ targetBook.getTitle() + "\" is out of stock right now.");
         }
@@ -34,14 +34,14 @@ public class borrowManager {
 
         targetBook.setQuantity(targetBook.getQuantity() -1);
 
-        bookDataFile.saveBooks(bookManager.bookList);
+        bookDataFile.saveBooks(bookMgr.bookList);
         borrowDataFile.saveBorrows(borrowedBooks);
 
         return "Sucessfully borrowed: \"" + targetBook.getTitle() + "\" by " + borrowerName;
     }
 
-    public String returnBook(String isbn, BookManager bookManager) throws borrowException {
-        BookManager.sanitizeIsbn(isbn);
+    public String returnBook(String isbn, bookManager bookMgr) throws borrowException {
+        bookManager.sanitizeIsbn(isbn);
         if(isbn.isEmpty()) {
             throw new borrowException("Error: ISBN field cannot be empty!");
         }
@@ -58,16 +58,16 @@ public class borrowManager {
             throw new borrowException("Error: No active borrow record found for ISBN " + isbn + ". This book is not currently on loan.");
         }
 
-        int index = bookManager.findBookIndex(isbn);
+        int index = bookMgr.findBookIndex(isbn);
         if(index == -1) {
             throw new borrowException("Error: Book with ISBN \" + isbn + \" is not registered in the system.");
         }
 
-        Book targetBook = bookManager.bookList.get(index);
+        Book targetBook = bookMgr.bookList.get(index);
         targetBook.setQuantity(targetBook.getQuantity() +1);
         borrowedBooks.remove(matchedBorrow);
 
-        bookDataFile.saveBooks(bookManager.bookList);
+        bookDataFile.saveBooks(bookMgr.bookList);
         borrowDataFile.saveBorrows(borrowedBooks);
 
         return "Success: \"" + targetBook.getTitle() + "\" returned by " + matchedBorrow.getBorrowerName() + ". Inventory quantity incraesed by 1.";

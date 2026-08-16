@@ -9,7 +9,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class donateView {
-    public static VBox craeteView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
+    public static VBox craeteView(bookManager bookMgr, String btnStyle, String btnHoverStyle) {
         VBox formContainer = new VBox(15);
         formContainer.setAlignment(Pos.CENTER);
         formContainer.setMaxWidth(550);
@@ -118,10 +118,10 @@ public class donateView {
                 txtFeedback.setText("Error: ISBN cannot be empty!");
                 return;
             }
-            String isbnText = BookManager.sanitizeIsbn(rawIsbn);
+            String isbnText = bookManager.sanitizeIsbn(rawIsbn);
 
             //check the isbn is a standard 10 or 13 digit number
-            if (!BookManager.isValidIsbn(isbnText)) {
+            if (! bookManager.isValidIsbn(isbnText)) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: red;");
                 txtFeedback.setText("Error: ISBN must be a standard 10 or 13 digit number (hyphens and spaces are allowed).");
                 return;
@@ -133,7 +133,7 @@ public class donateView {
             String categoryStr = cmbCategory.getValue();
 
             //send the content (addOrUpdateBook persists the updated list)
-            String resultMsg = bookManager.addOrUpdateBook(titleStr, authorStr, isbnText, categoryStr);
+            String resultMsg = bookMgr.addOrUpdateBook(titleStr, authorStr, isbnText, categoryStr);
 
             //feedback part
             txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 16px; -fx-text-fill: green;");

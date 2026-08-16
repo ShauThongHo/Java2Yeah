@@ -7,7 +7,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class statsView {
-    public static VBox createStatsView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
+    public static VBox createStatsView(bookManager bookManager, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(20);
         container.setAlignment(Pos.CENTER);
         container.setMaxWidth(650);

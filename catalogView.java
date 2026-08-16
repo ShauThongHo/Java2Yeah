@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 import javafx.scene.control.ScrollPane;
 
 public class catalogView {
-    public static ScrollPane createView(BookManager bookManager) {
+    public static ScrollPane createView(bookManager bookManager) {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
