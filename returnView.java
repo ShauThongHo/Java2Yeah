@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 public class returnView {
 
     @SuppressWarnings("unchecked")
-    public static VBox createReturnView(bookManager bookManager, String btnStyle, String btnHoverStyle) {
+    public static VBox createReturnView(bookManager bookMgr, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(15);
         container.setAlignment(Pos.CENTER);
         container.setMaxWidth(850);
@@ -46,7 +46,7 @@ public class returnView {
         colQty.setPrefWidth(100);
 
         table.getColumns().addAll(colTitle, colAuthor, colIsbn, colCategory, colQty);
-        table.getItems().setAll(bookManager.bookList);
+        table.getItems().setAll(bookMgr.bookList);
 
         HBox actionBox = new HBox(15);
         actionBox.setAlignment(Pos.CENTER);
@@ -100,10 +100,10 @@ public class returnView {
                 // BookManager rejects phantom returns without touching inventory
                 borrowManager bm = new borrowManager();
 
-                String resultMsg = bm.returnBook(isbnInput, bookManager);
+                String resultMsg = bm.returnBook(isbnInput, bookMgr);
 
                 // refresh the stock table so the incremented quantity is visible
-                table.getItems().setAll(bookManager.bookList);
+                table.getItems().setAll(bookMgr.bookList);
 
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: green;");
                 txtFeedback.setText(resultMsg);
