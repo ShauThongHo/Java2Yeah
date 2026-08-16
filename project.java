@@ -101,6 +101,9 @@ public class project extends Application {
         //button return
         Button buttonReturn = new Button("Return");
 
+        //button my account
+        Button buttonMyAccount = new Button("My Account");
+
         //button dashboard
         Button buttonDashboard = new Button("Dashboard");
 
@@ -108,7 +111,7 @@ public class project extends Application {
         Button buttonQuit = new Button("Quit");
 
         //both button style
-        Button [] menuButtons = {buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonQuit};
+        Button [] menuButtons = {buttonCatalog, buttonDonate, buttonBorrow, buttonMyAccount, buttonReturn, buttonDashboard, buttonQuit};
         for (Button btn : menuButtons) {
             btn.setStyle(btnstyle);
             btn.setOnMouseEntered(e -> btn.setStyle(btnHoverStyle));
@@ -158,12 +161,28 @@ public class project extends Application {
             centerContentArea.getChildren().addAll(borrowView.createView(bookManager, btnstyle, btnHoverStyle));
         });
 
+        //my account part
+        //click my account status
+        buttonMyAccount.setOnAction(e -> {
+            centerContentArea.getChildren().clear();
+            try {
+                centerContentArea.getChildren().addAll(memberView.createView(bookManager, btnstyle, btnHoverStyle));
+            } catch (Exception ex) {
+                // never leave a blank screen - print the error and show it
+                ex.printStackTrace();
+                Text errorText = new Text("Error opening My Account: " + ex.getMessage());
+                errorText.setFill(Color.RED);
+                errorText.setFont(Font.font("Courier New", FontWeight.BOLD, 16));
+                centerContentArea.getChildren().add(errorText);
+            }
+        });
+
         buttonQuit.setOnAction(e -> {
             quitAction.handleQuit();
         });
 
         //combine topbar button
-        topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonQuit);
+        topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonMyAccount, buttonQuit);
 
         Scene scene = new Scene(rootLayout, 1200, 700);
         

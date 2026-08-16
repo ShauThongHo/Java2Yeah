@@ -85,6 +85,14 @@ public class bookDataFile {
             }
             reader.close();
 
+            // some lines may have been skipped (malformed) - trim the array
+            // so there are no null holes left at the end
+            if (index < books.length) {
+                Book[] trimmed = new Book[index];
+                System.arraycopy(books, 0, trimmed, 0, index);
+                books = trimmed;
+            }
+
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         } catch (NumberFormatException e) {
