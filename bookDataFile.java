@@ -18,18 +18,11 @@ public class bookDataFile {
     // the file where the book inventory is stored
     private static final String FILE_NAME = "books_data.csv";
 
-    // ------------------------------------------------------------------
-    // loadBooks(): reads every book from the CSV file and returns them
-    // as a Book[] array. If the file does not exist yet, it is created
-    // and filled with a few default books.
-    // ------------------------------------------------------------------
-    public static Book[] loadBooks() {
-        Book[] books = new Book[0];   // start with an empty array
+    public static ArrayList<Book> loadBooks() {
+        ArrayList<Book> books = new ArrayList<>();
+        File file = new File(FILE_NAME);
 
         try {
-            File file = new File(FILE_NAME);
-
-            // STEP 1: if the file does not exist, create it with default books
             if (!file.exists()) {
                 file.createNewFile();
 
@@ -43,92 +36,34 @@ public class bookDataFile {
                 return defaultBooks;       // and return them to the program
             }
 
-            // STEP 2: first pass - count how many books are in the file.
-            // We need the count first because arrays have a fixed size.
-            int count = 0;
-            Scanner counter = new Scanner(file);
-            while (counter.hasNextLine()) {
-                if (!counter.nextLine().trim().isEmpty()) {
-                    count++;
-                }
-            }
-            counter.close();
-
-            // STEP 3: create an array that is exactly the right size
-            books = new Book[count];
-
-            // STEP 4: second pass - read each line and turn it into a Book
-            Scanner reader = new Scanner(file);
-            int index = 0;
-            while (reader.hasNextLine()) {
-                String line = reader.nextLine().trim();
-
-                // skip empty lines
-                if (line.isEmpty()) {
-                    continue;
-                }
-
-                // each line is: Title,Author,ISBN,Category,Quantity
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-
-                // only use the line if it really has 5 parts
                 if (parts.length == 5) {
-                    String title = parts[0];
-                    String author = parts[1];
-                    String isbn = parts[2];
-                    String category = parts[3];
-                    int quantity = Integer.parseInt(parts[4]);
-
-                    books[index] = new Book(title, author, isbn, category, quantity);
-                    index++;
+                    String title = parts[0].trim();
+                    String author = parts[1].trim();
+                    String isbn = parts[2].trim();
+                    String category = parts[3].trim();
+                    int quantity = Integer.parseInt(parts[4].trim());
+                    books.add(new Book(title, author, isbn, category, quantity));
                 }
             }
             reader.close();
-
-            // some lines may have been skipped (malformed) - trim the array
-            // so there are no null holes left at the end
-            if (index < books.length) {
-                Book[] trimmed = new Book[index];
-                System.arraycopy(books, 0, trimmed, 0, index);
-                books = trimmed;
-            }
-
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.err.println("Error: a quantity in the file is not a number: " + e.getMessage());
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Error reading book data: " + e.getMessage());
         }
-
         return books;
     }
 
-    // ------------------------------------------------------------------
-    // saveBooks(): writes every book in the Book[] array into the CSV file.
-    // ------------------------------------------------------------------
-    public static void saveBooks(Book[] books) {
-        PrintWriter writer = null;
-
-        try {
-            // PrintWriter can create the file if it does not exist
-            writer = new PrintWriter(FILE_NAME);
-
-            // write one line per book
-            for (int i = 0; i < books.length; i++) {
-                Book b = books[i];
-                writer.println(b.getTitle() + ","
-                        + b.getAuthor() + ","
-                        + b.getIsbn() + ","
-                        + b.getCategory() + ","
-                        + b.getQuantity());
+    public static void saveBooks(ArrayList<Book> books) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (Book b : books) {
+                writer.write(b.getTitle() + "," + b.getAuthor() + "," + b.getIsbn() + "," + b.getCategory() + "," + b.getQuantity());
+                writer.newLine();
             }
-
         } catch (IOException e) {
-            System.err.println("Error saving file: " + e.getMessage());
-        } finally {
-            // always close the file, even if an error happened
-            if (writer != null) {
-                writer.close();
-            }
+            System.err.println("Error saving book data: " + e.getMessage());
         }
     }
 }

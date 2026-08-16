@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import java.util.Arrays;
 
 public class returnView {
 
@@ -88,42 +87,29 @@ public class returnView {
 
         btnReturn.setOnAction(e -> {
             try {
-                String isbnInput = txtIsbn.getText().trim();
-                if (isbnInput.isEmpty()) {
+                String rawIsbn = txtIsbn.getText().trim();
+                if (rawIsbn.isEmpty()) {
                     throw new IllegalArgumentException("Error: ISBN field cannot be empty!");
                 }
-
-                Long.parseLong(isbnInput);
-
-                boolean found = false;
-                for (Book b : bookManager.bookList) {
-                    if (b.getIsbn().equals(isbnInput)) {
-                        b.setQuantity(b.getQuantity() + 1);
-                        found = true;
-                        break;
-                    }
+                String isbnInput = BookManager.sanitizeIsbn(rawIsbn);
+                if (!BookManager.isValidIsbn(isbnInput)) {
+                    throw new IllegalArgumentException("Error: ISBN must be a standard 10 or 13 digit number (hyphens and spaces are allowed).");
                 }
 
-                if (!found) {
-                    txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: red;");
-                    txtFeedback.setText("Error: Book with ISBN " + isbnInput + " not found in the system.");
-                    return;
-                }
+                // only an ISBN with an active borrow record may be returned;
+                // BookManager rejects phantom returns without touching inventory
+                String resultMsg = bookManager.returnBook(isbnInput);
 
-                // remove any matching borrow record so history stays accurate
-                bookManager.removeBorrowedBook(isbnInput);
-
-                bookDataFile.saveBooks(bookManager.bookList);
-                borrowDataFile.saveBorrows(bookManager.borrowedBooks);
+                // refresh the stock table so the incremented quantity is visible
                 table.getItems().setAll(bookManager.bookList);
 
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: green;");
-                txtFeedback.setText("Success: Book returned successfully! Inventory quantity increased by 1.");
+                txtFeedback.setText(resultMsg);
                 txtIsbn.clear();
 
-            } catch (NumberFormatException ex) {
+            } catch (BorrowException ex) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: red;");
-                txtFeedback.setText("Error: ISBN must contain numbers only!");
+                txtFeedback.setText(ex.getMessage());
             } catch (IllegalArgumentException ex) {
                 txtFeedback.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: red;");
                 txtFeedback.setText(ex.getMessage());
@@ -180,8 +166,8 @@ public class returnView {
         btnRefresh.setOnMouseExited(e -> btnRefresh.setStyle(btnStyle));
 
         Runnable calculateStats = () -> {
-            int titles = bookManager.bookList.length;
-            int totalQty = Arrays.stream(bookManager.bookList).mapToInt(Book::getQuantity).sum();
+            int titles = bookManager.bookList.size();
+            int totalQty = bookManager.bookList.stream().mapToInt(Book::getQuantity).sum();
 
             lblTitlesVal.setText(String.valueOf(titles));
             lblQtyVal.setText(String.valueOf(totalQty));

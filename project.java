@@ -17,7 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 
-public class project extends Application {  
+public class project extends Application {
     private BookManager bookManager = new BookManager();
 
     @Override
@@ -44,9 +44,9 @@ public class project extends Application {
 
         //topbar part
         //topbar layout
-        HBox topBar = new HBox(15); 
+        HBox topBar = new HBox(15);
         topBar.setAlignment(Pos.CENTER_LEFT);
-        topBar.setPadding(new Insets(15, 25, 15, 25)); 
+        topBar.setPadding(new Insets(15, 25, 15, 25));
         topBar.setPrefHeight(90);
         topBar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
@@ -70,24 +70,24 @@ public class project extends Application {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         //button style
-        String btnstyle = "-fx-background-color: #4d6177;" + 
-                         "-fx-text-fill: white;" + 
-                         "-fx-font-family: 'Courier New';" + 
-                         "-fx-font-weight: bold;" + 
-                         "-fx-font-size: 15px;" + 
-                         "-fx-background-radius: 8px;" + 
-                         "-fx-cursor: hand;" +          
-                         "-fx-padding: 8 20 8 20;";
+        String btnstyle = "-fx-background-color: #4d6177;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-family: 'Courier New';" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 15px;" +
+                "-fx-background-radius: 8px;" +
+                "-fx-cursor: hand;" +
+                "-fx-padding: 8 20 8 20;";
 
-        String btnHoverStyle = "-fx-background-color: #7b90a4;" + 
-                             "-fx-text-fill: white;" + 
-                             "-fx-font-family: 'Courier New';" + 
-                             "-fx-font-weight: bold;" + 
-                             "-fx-font-size: 15px;" + 
-                             "-fx-background-radius: 8px;" + 
-                             "-fx-cursor: hand;" + 
-                             "-fx-padding: 8 20 8 20;" +
-                             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);";
+        String btnHoverStyle = "-fx-background-color: #7b90a4;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-family: 'Courier New';" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 15px;" +
+                "-fx-background-radius: 8px;" +
+                "-fx-cursor: hand;" +
+                "-fx-padding: 8 20 8 20;" +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);";
 
         //button catalog
         Button buttonCatalog = new Button("Catalog");
@@ -107,11 +107,14 @@ public class project extends Application {
         //button dashboard
         Button buttonDashboard = new Button("Dashboard");
 
+        //button my account
+        Button buttonMyAccount = new Button("My Account");
+
         //button quit
         Button buttonQuit = new Button("Quit");
 
         //both button style
-        Button [] menuButtons = {buttonCatalog, buttonDonate, buttonBorrow, buttonMyAccount, buttonReturn, buttonDashboard, buttonQuit};
+        Button[] menuButtons = {buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonMyAccount, buttonQuit};
         for (Button btn : menuButtons) {
             btn.setStyle(btnstyle);
             btn.setOnMouseEntered(e -> btn.setStyle(btnHoverStyle));
@@ -141,46 +144,41 @@ public class project extends Application {
         rootLayout.getChildren().addAll(imageView, rectanglebgd, mainLayout);
 
         //catalog part
-        //click catalog status
         buttonCatalog.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().addAll(catalogView.createView(bookManager));
         });
 
         //donation part
-        //donate status
         buttonDonate.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().addAll(donateView.craeteView(bookManager, btnstyle, btnHoverStyle));
         });
 
         //borrow part
-        //click borrow status
         buttonBorrow.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().addAll(borrowView.createView(bookManager, btnstyle, btnHoverStyle));
         });
 
-        // return status 
+        //return part
         buttonReturn.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().addAll(returnView.createReturnView(bookManager, btnstyle, btnHoverStyle));
         });
 
-        // dashboard / stats status
+        //dashboard / stats part
         buttonDashboard.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             centerContentArea.getChildren().addAll(returnView.createStatsView(bookManager, btnstyle, btnHoverStyle));
         });
 
         //my account part
-        //click my account status
         buttonMyAccount.setOnAction(e -> {
             centerContentArea.getChildren().clear();
             try {
                 centerContentArea.getChildren().addAll(memberView.createView(bookManager, btnstyle, btnHoverStyle));
             } catch (Exception ex) {
-                // never leave a blank screen - print the error and show it
                 ex.printStackTrace();
                 Text errorText = new Text("Error opening My Account: " + ex.getMessage());
                 errorText.setFill(Color.RED);
@@ -197,13 +195,11 @@ public class project extends Application {
         topBar.getChildren().addAll(bookIconView, textSystemMenu, spacer, buttonCatalog, buttonDonate, buttonBorrow, buttonReturn, buttonDashboard, buttonMyAccount, buttonQuit);
 
         Scene scene = new Scene(rootLayout, 1200, 700);
-        
-        primaryStage.setFullScreen(true);
 
+        primaryStage.setFullScreen(true);
         primaryStage.setTitle("Book Donation & Management system");
         primaryStage.setScene(scene);
         primaryStage.show();
-        
     }
 
     public static void main(String[] args) {
