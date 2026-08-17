@@ -88,6 +88,6 @@ public class borrowManager {
         bookDataFile.saveBooks(bookMgr.bookList);
         borrowDataFile.saveBorrows(borrowedBooks);
 
-        return "Success: \"" + targetBook.getTitle() + "\" returned by " + matchedBorrow.getBorrowerName() + ". Inventory quantity incraesed by 1.";
+        return "Success: \"" + targetBook.getTitle() + "\" returned by " + matchedBorrow.getBorrowerName();
     }
 }

@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 public class returnView {
-
+    //panadol
     @SuppressWarnings("unchecked")
     public static VBox createReturnView(bookManager bookMgr, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(15);
@@ -60,7 +60,7 @@ public class returnView {
         txtIsbn.setStyle(fldStyle);
         txtIsbn.setEditable(true);
 
-        table.setRowFactory(tv -> {
+        table.setRowFactory(e -> {
             TableRow<borrowedBook> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getClickCount() == 1) {
