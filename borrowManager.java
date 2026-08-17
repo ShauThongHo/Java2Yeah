@@ -8,8 +8,8 @@ public class borrowManager {
         this.borrowedBooks = borrowDataFile.loadBorrows();
     }
 
-    public String borrowBook(String isbn, String borrowerName, int borrowDays, BookManager bookMgr) throws borrowException {
-        BookManager.sanitizeIsbn(isbn);
+    public String borrowBook(String isbn, String borrowerName, int borrowDays, bookManager bookMgr) throws borrowException {
+        bookManager.sanitizeIsbn(isbn);
 
         if (borrowerName == null || borrowerName.trim().isEmpty()) {
             throw new borrowException("Error: Borrower name cannot be empty!");
@@ -58,8 +58,8 @@ public class borrowManager {
         return "Sucessfully borrowed: \"" + targetBook.getTitle() + "\" by " + borrowerName;
     }
 
-    public String returnBook(String isbn, BookManager bookMgr) throws borrowException {
-        BookManager.sanitizeIsbn(isbn);
+    public String returnBook(String isbn, bookManager bookMgr) throws borrowException {
+        bookManager.sanitizeIsbn(isbn);
         if(isbn.isEmpty()) {
             throw new borrowException("Error: ISBN field cannot be empty!");
         }

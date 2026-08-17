@@ -18,7 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 
 public class project extends Application {
-    private BookManager bookManager = new BookManager();
+    private bookManager bookManager = new bookManager();
 
     public static String loggedInUser = "";
 

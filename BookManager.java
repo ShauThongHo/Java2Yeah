@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-public class BookManager {
+class bookManager {
     public ArrayList <Book> bookList;
 
-    public BookManager() {
+    public bookManager() {
         this.bookList = bookDataFile.loadBooks();
     }
 

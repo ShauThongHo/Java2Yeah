@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class returnView {
     //panadol
     @SuppressWarnings("unchecked")
-    public static VBox createReturnView(BookManager bookMgr, String btnStyle, String btnHoverStyle) {
+    public static VBox createReturnView(bookManager bookMgr, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(15);
         container.setAlignment(Pos.CENTER);
         container.setMaxWidth(850);
@@ -123,8 +123,8 @@ public class returnView {
                 if (rawIsbn.isEmpty()) {
                     throw new IllegalArgumentException("Error: ISBN field cannot be empty!");
                 }
-                String isbnInput = BookManager.sanitizeIsbn(rawIsbn);
-                if (! BookManager.isValidIsbn(isbnInput)) {
+                String isbnInput = bookManager.sanitizeIsbn(rawIsbn);
+                if (! bookManager.isValidIsbn(isbnInput)) {
                     throw new IllegalArgumentException("Error: ISBN must be a standard 10 or 13 digit number (hyphens and spaces are allowed).");
                 }
 

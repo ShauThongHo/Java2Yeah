@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class memberView {
 
-    public static ScrollPane createView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
+    public static ScrollPane createView(bookManager bookManager, String btnStyle, String btnHoverStyle) {
         // explicit -fx-text-fill keeps the labels readable (dark text) even
         // inside the ScrollPane, where the theme's derived text color can
         // otherwise resolve to white.
