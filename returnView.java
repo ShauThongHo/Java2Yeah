@@ -31,25 +31,25 @@ public class returnView {
 
         TableColumn<BorrowedBook, String> colTitle = new TableColumn<>("Title");
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colTitle.setPrefWidth(200);
+        colTitle.setPrefWidth(220);
 
         TableColumn<BorrowedBook, String> colIsbn = new TableColumn<>("ISBN");
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        colIsbn.setPrefWidth(130);
+        colIsbn.setPrefWidth(120);
 
         TableColumn<BorrowedBook, String> colBorrowDate = new TableColumn<>("Borrow Date");
         colBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
-        colBorrowDate.setPrefWidth(120);
-
-        TableColumn<BorrowedBook, String> colDueDate = new TableColumn<>("Due Date");
-        colDueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
-        colDueDate.setPrefWidth(120);
+        colBorrowDate.setPrefWidth(100);
 
         TableColumn<BorrowedBook, Integer> colDays = new TableColumn<>("Days");
         colDays.setCellValueFactory(new PropertyValueFactory<>("borrowDays"));
         colDays.setPrefWidth(70);
 
-        table.getColumns().addAll(colTitle, colIsbn, colBorrowDate, colDueDate, colDays);
+        TableColumn<BorrowedBook, String> colDueDate = new TableColumn<>("Due Date");
+        colDueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
+        colDueDate.setPrefWidth(100);
+
+        table.getColumns().addAll(colTitle, colIsbn, colBorrowDate, colDays, colDueDate);
 
         Label customPlaceholder = new Label("No content");
         customPlaceholder.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;");
