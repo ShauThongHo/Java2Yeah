@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 import java.time.LocalDate;
 
 public class borrowView {
-    public static VBox createView(bookManager bookManager, String btnStyle, String btnHoverStyle) {
+    public static VBox createView(BookManager bookManager, String btnStyle, String btnHoverStyle) {
         VBox container = new VBox(15);
         container.setAlignment(Pos.CENTER);
         container.setMaxWidth(700);

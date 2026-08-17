@@ -2,14 +2,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class borrowManager {
-    public ArrayList <borrowedBook> borrowedBooks;
+    public ArrayList <BorrowedBook> borrowedBooks;
 
     public borrowManager() {
         this.borrowedBooks = borrowDataFile.loadBorrows();
     }
 
-    public String borrowBook(String isbn, String borrowerName, int borrowDays, bookManager bookMgr) throws borrowException {
-        bookManager.sanitizeIsbn(isbn);
+    public String borrowBook(String isbn, String borrowerName, int borrowDays, BookManager bookMgr) throws borrowException {
+        BookManager.sanitizeIsbn(isbn);
 
         if (borrowerName == null || borrowerName.trim().isEmpty()) {
             throw new borrowException("Error: Borrower name cannot be empty!");
@@ -46,7 +46,7 @@ public class borrowManager {
         String borrowDate = LocalDate.now().toString();
         String dueDate = LocalDate.now().plusDays(borrowDays).toString();
 
-        borrowedBooks.add(new borrowedBook(
+        borrowedBooks.add(new BorrowedBook(
             targetBook.getTitle(), targetBook.getAuthor(), targetBook.getIsbn(), targetBook.getCategory(), 1, borrowerName, borrowDate, borrowDays, dueDate
         ));
 
@@ -58,14 +58,14 @@ public class borrowManager {
         return "Sucessfully borrowed: \"" + targetBook.getTitle() + "\" by " + borrowerName;
     }
 
-    public String returnBook(String isbn, bookManager bookMgr) throws borrowException {
-        bookManager.sanitizeIsbn(isbn);
+    public String returnBook(String isbn, BookManager bookMgr) throws borrowException {
+        BookManager.sanitizeIsbn(isbn);
         if(isbn.isEmpty()) {
             throw new borrowException("Error: ISBN field cannot be empty!");
         }
 
-        borrowedBook matchedBorrow = null;
-        for(borrowedBook bb : borrowedBooks) {
+        BorrowedBook matchedBorrow = null;
+        for(BorrowedBook bb : borrowedBooks) {
             if(bb.getIsbn().equals(isbn)) {
                 matchedBorrow = bb;
                 break;
