@@ -1,5 +1,3 @@
 *.class
 out/
 .DS_Store
-.vscode/
-ManageData/data/*
