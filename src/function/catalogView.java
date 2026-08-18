@@ -1,3 +1,4 @@
+package src.function;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -10,10 +11,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import src.function.manage.bookManager;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
+
+import src.ClassFolder.Book;
 
 public class catalogView {
     public static ScrollPane createView(bookManager bookManager) {
@@ -73,7 +77,7 @@ public class catalogView {
                     //book image placeholder
                     ImageView bookImageView = new ImageView();
                     try {
-                        bookImageView.setImage(new Image("bookCover.png"));
+                        bookImageView.setImage(new Image("src/img/bookCover.png"));
                     } catch (Exception e) {
                     }
 

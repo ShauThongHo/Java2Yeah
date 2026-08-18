@@ -1,4 +1,5 @@
-class Member {
+package src.ClassFolder;
+public class Member {
 
     private String memberId;
     private String name;
@@ -6,7 +7,7 @@ class Member {
     private String email;
     private String registerDate;
 
-    public Member(String memberId, String name, String phone, String email, String registerDate) {
+    Member(String memberId, String name, String phone, String email, String registerDate) {
         this.memberId = memberId;
         this.name = name;
         this.phone = phone;
@@ -15,27 +16,27 @@ class Member {
     }
 
     // getters
-    public String getMemberId() {
+    String getMemberId() {
         return memberId;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public String getPhone() {
+    String getPhone() {
         return phone;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public String getRegisterDate() {
+    String getRegisterDate() {
         return registerDate;
     }
 
-    public String displayInfo() {
+    String displayInfo() {
         return "Member ID: " + memberId
                 + "\nName: " + name
                 + "\nPhone: " + phone

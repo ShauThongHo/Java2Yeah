@@ -1,5 +1,15 @@
+package src.function.borrow;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import src.ClassFolder.Book;
+import src.ClassFolder.BorrowedBook;
+import src.ClassFolder.Member;
+import src.ClassFolder.ReturnedBook;
+import src.function.manage.bookDataFile;
+import src.function.manage.bookManager;
+import src.function.manage.historyDataFile;
+import src.function.manage.memberDataFile;
 
 public class borrowManager {
     public ArrayList <BorrowedBook> borrowedBooks;

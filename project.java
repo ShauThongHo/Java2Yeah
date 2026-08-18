@@ -1,5 +1,12 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
+import src.function.catalogView;
+import src.function.donateView;
+import src.function.memberView;
+import src.function.quitAction;
+import src.function.statsView;
+import src.function.borrow.borrowView;
+import src.function.manage.bookManager;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,7 +34,7 @@ public class project extends Application {
         //main menu
         //background part
         //background image
-        Image imagebgd = new Image("background.jpg");
+        Image imagebgd = new Image("src/img/background.jpg");
         ImageView imageView = new ImageView(imagebgd);
         imageView.setPreserveRatio(false);
 
@@ -53,7 +60,7 @@ public class project extends Application {
         topBar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
         //book icon image
-        Image bookIcon = new Image("book.png");
+        Image bookIcon = new Image("src/img/book.png");
         ImageView bookIconView = new ImageView(bookIcon);
         bookIconView.setFitWidth(45);
         bookIconView.setFitHeight(45);

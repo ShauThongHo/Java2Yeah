@@ -1,3 +1,4 @@
+package src.function;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -6,6 +7,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import src.function.manage.bookManager;
+import src.function.manage.memberDataFile;
+
 import java.time.LocalDate;
 
 public class memberView {

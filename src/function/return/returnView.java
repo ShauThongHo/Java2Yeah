@@ -6,6 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import src.function.borrow.borrowException;
+import src.function.borrow.borrowManager;
+import src.function.manage.bookManager;
+
 import java.util.ArrayList;
 
 public class returnView {
