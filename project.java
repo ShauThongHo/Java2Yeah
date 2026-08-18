@@ -1,12 +1,7 @@
+
 import javafx.application.Application;
 import javafx.stage.Stage;
-import src.function.catalogView;
-import src.function.donateView;
-import src.function.memberView;
-import src.function.quitAction;
-import src.function.statsView;
-import src.function.borrow.borrowView;
-import src.function.manage.bookManager;
+import ManageData.*;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,7 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 
-public class project extends Application {
+public class Project extends Application {
     private bookManager bookManager = new bookManager();
 
     public static String loggedInUser = "";

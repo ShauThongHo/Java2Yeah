@@ -7,7 +7,7 @@ public class Member {
     private String email;
     private String registerDate;
 
-    Member(String memberId, String name, String phone, String email, String registerDate) {
+    public Member(String memberId, String name, String phone, String email, String registerDate) {
         this.memberId = memberId;
         this.name = name;
         this.phone = phone;
@@ -16,23 +16,23 @@ public class Member {
     }
 
     // getters
-    String getMemberId() {
+    public String getMemberId() {
         return memberId;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    String getRegisterDate() {
+    public String getRegisterDate() {
         return registerDate;
     }
 

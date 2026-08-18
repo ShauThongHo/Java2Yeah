@@ -1,4 +1,4 @@
-package src.function.borrow;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -6,11 +6,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import src.function.manage.bookManager;
 
 import java.time.LocalDate;
 
 import src.ClassFolder.Book;
+import BorrowBook.borrowException;
+import BorrowBook.borrowManager;
+import ManageData.bookManager;
 
 public class borrowView {
     public static VBox createView(bookManager bookManager, String btnStyle, String btnHoverStyle) {

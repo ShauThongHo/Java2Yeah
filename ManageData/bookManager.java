@@ -1,10 +1,10 @@
-package src.function.manage;
+package ManageData;
 import java.util.ArrayList;
 
-import Book;
+import src.ClassFolder.Book;
 
 public class bookManager {
-    ArrayList <Book> bookList;
+    public ArrayList <Book> bookList;
 
     public bookManager() {
         this.bookList = bookDataFile.loadBooks();

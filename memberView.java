@@ -1,4 +1,4 @@
-package src.function;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -7,8 +7,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import src.function.manage.bookManager;
-import src.function.manage.memberDataFile;
+import src.ClassFolder.Member;
+import ManageData.bookManager;
+import ManageData.memberDataFile;
 
 import java.time.LocalDate;
 
@@ -100,14 +101,14 @@ public class memberView {
 
         btnLogin.setOnAction(e -> {
             String name = txtName.getText().trim();
-            project.loggedInUser = name;
+            Project.loggedInUser = name;
             if (name.isEmpty()) {
                 txtFeedback.setStyle(feedbackStyle + " -fx-text-fill: red;");
                 txtFeedback.setText("Error: Please enter your name!");
                 return;
             }
 
-            project.loggedInUser = name;
+            Project.loggedInUser = name;
 
             Member[] members = memberDataFile.loadMembers();
             Member found = null;
@@ -143,7 +144,7 @@ public class memberView {
             txtPhone.clear();
             txtEmail.clear();
             txtFeedback.clear();
-            project.loggedInUser = "";
+            Project.loggedInUser = "";
         });
 
         card.getChildren().addAll(title, grid, btnBox, txtFeedback);
