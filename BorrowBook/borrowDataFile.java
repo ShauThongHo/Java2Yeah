@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import src.ClassFolder.BorrowedBook;
 
 public class borrowDataFile {
-    private static final String FILE_NAME = "borrows_data.csv";
+    private static final String FILE_NAME = "ManageData/data/borrows_data.csv";
 
     public static ArrayList<BorrowedBook> loadBorrows() {
         ArrayList<BorrowedBook> list = new ArrayList<>();
