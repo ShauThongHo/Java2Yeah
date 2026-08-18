@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import src.ClassFolder.BorrowedBook;
 import src.ClassFolder.RecordItem;
 import src.ClassFolder.ReturnedBook;
+import BorrowBook.bookManager;
 import BorrowBook.borrowManager;
-import ManageData.bookManager;
 import ManageData.historyDataFile;
 
 public class statsView {

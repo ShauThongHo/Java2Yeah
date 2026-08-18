@@ -16,8 +16,8 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
+import BorrowBook.bookManager;
 import src.ClassFolder.Book;
-import ManageData.bookManager;
 
 public class catalogView {
     public static ScrollPane createView(bookManager bookManager) {

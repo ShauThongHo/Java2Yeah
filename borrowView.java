@@ -10,9 +10,9 @@ import javafx.scene.text.Text;
 import java.time.LocalDate;
 
 import src.ClassFolder.Book;
+import BorrowBook.bookManager;
 import BorrowBook.borrowException;
 import BorrowBook.borrowManager;
-import ManageData.bookManager;
 
 public class borrowView {
     public static VBox createView(bookManager bookManager, String btnStyle, String btnHoverStyle) {

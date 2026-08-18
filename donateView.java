@@ -1,4 +1,5 @@
 
+import BorrowBook.bookManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -8,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import ManageData.bookManager;
 
 public class donateView {
     public static VBox craeteView(bookManager bookMgr, String btnStyle, String btnHoverStyle) {

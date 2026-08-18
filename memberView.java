@@ -8,10 +8,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import src.ClassFolder.Member;
-import ManageData.bookManager;
 import ManageData.memberDataFile;
 
 import java.time.LocalDate;
+
+import BorrowBook.bookManager;
 
 public class memberView {
 
